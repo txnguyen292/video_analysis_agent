@@ -1,0 +1,6 @@
+# Default configuration for Video Understanding Agent
+# CLI arguments will override these values.
+
+video_path: "/Users/tungnguyen/personal_projects/video_agent/data/intputs/Barack Obama's Inspirational Speech with Subtitles ｜｜ One of the best English speeches ever 2023 [PGUdWfB8nLg].mp4"
+model: "gemini-3-flash-preview"
+output: "/Users/tungnguyen/personal_projects/video_agent/data/outputs"

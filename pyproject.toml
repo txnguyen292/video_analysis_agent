@@ -1,0 +1,21 @@
+[project]
+name = "video-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "google-genai>=1.56.0",
+    "loguru>=0.7.3",
+    "python-dotenv>=1.2.1",
+    "rich>=14.2.0",
+    "typer>=0.20.1",
+    "pyyaml>=6.0.2",
+]
+
+[project.scripts]
+video-agent = "video_agent.main:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
