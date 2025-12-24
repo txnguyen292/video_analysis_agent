@@ -1,5 +1,6 @@
 import flet as ft
 from video_agent.ui.agent_helper import AgentHelper
+from video_agent.ui import theme
 import asyncio
 import os
 import subprocess
@@ -19,35 +20,50 @@ class EventsView(ft.Column):
 
         self.upload_area = ft.Container(
             content=ft.Column([
-                ft.Icon(ft.Icons.CLOUD_UPLOAD_OUTLINED, size=50, color=ft.Colors.PRIMARY),
-                ft.Text("Drag & Drop Video Here", size=18, weight=ft.FontWeight.BOLD),
-                ft.Text("or click to browse", color=ft.Colors.GREY_400),
-                ft.Text("No file selected", key="file_status", color=ft.Colors.GREY_500)
+                ft.Icon(ft.Icons.CLOUD_UPLOAD_OUTLINED, size=50, color=theme.ACCENT),
+                ft.Text("Drop video to detect events", size=18, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
+                ft.Text("Drag a file here or browse", color=theme.TEXT_SECONDARY),
+                ft.Text("No file selected", key="file_status", color=theme.TEXT_MUTED)
             ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-            border=ft.border.all(2, ft.Colors.PRIMARY),
-            border_radius=10,
-            padding=40,
+            border=ft.border.all(1, theme.DROP_BORDER),
+            border_radius=18,
+            padding=36,
+            bgcolor=theme.CARD_BG,
             alignment=ft.alignment.center,
             ink=True,
             on_click=self.open_file_picker,
+            on_hover=self._on_upload_hover,
+            animate=ft.Animation(200, "easeOut"),
         )
 
         self.browse_btn = ft.OutlinedButton(
             "Browse Video",
             icon=ft.Icons.UPLOAD_FILE,
             on_click=self.open_file_picker,
+            style=ft.ButtonStyle(
+                color=theme.TEXT_PRIMARY,
+                bgcolor=theme.BUTTON_SECONDARY_BG,
+                side=ft.BorderSide(1, theme.BORDER),
+                padding=ft.padding.symmetric(horizontal=20, vertical=12),
+                shape=ft.RoundedRectangleBorder(radius=14),
+            ),
         )
         
         self.process_btn = ft.ElevatedButton(
             "Detect Events", 
             icon=ft.Icons.SEARCH, 
-            style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), padding=20),
+            style=ft.ButtonStyle(
+                shape=ft.RoundedRectangleBorder(radius=14),
+                padding=ft.padding.symmetric(horizontal=26, vertical=14),
+                color=ft.Colors.WHITE,
+                bgcolor={ft.ControlState.DISABLED: theme.BUTTON_DISABLED_BG, "": theme.BUTTON_PRIMARY_BG},
+            ),
             on_click=self.process_video,
             disabled=True
         )
         
-        self.progress_bar = ft.ProgressBar(width=400, color="amber", bgcolor="#eeeeee", visible=False)
-        self.status_text = ft.Text("", color=ft.Colors.GREY_400)
+        self.progress_bar = ft.ProgressBar(width=400, color=theme.ACCENT, bgcolor=theme.BORDER_SOFT, visible=False)
+        self.status_text = ft.Text("", color=theme.TEXT_MUTED)
         
         self.result_markdown = ft.Markdown(
             selectable=True,
@@ -55,28 +71,35 @@ class EventsView(ft.Column):
         )
         
         self.save_btn = ft.ElevatedButton(
-            "Save Events", icon=ft.Icons.SAVE, bgcolor=ft.Colors.GREEN, color=ft.Colors.WHITE, visible=False,
+            "Save Events", icon=ft.Icons.SAVE, bgcolor=theme.SUCCESS, color=theme.BG_COLOR, visible=False,
             on_click=self.open_save_dialog
         )
 
         self.results_container = ft.Container(
             content=ft.Column([
-                ft.Row([ft.Text("Detected Events", size=20, weight=ft.FontWeight.BOLD), self.save_btn], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+                ft.Row([
+                    ft.Text("Detected Events", size=20, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
+                    self.save_btn
+                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                 ft.Container(
                     content=self.result_markdown,
-                    border=ft.border.all(1, ft.Colors.GREY_800),
-                    border_radius=5,
-                    padding=10,
-                    bgcolor=ft.Colors.BLACK12,
+                    border_radius=12,
+                    padding=20,
+                    bgcolor=theme.RESULT_BG,
+                    border=ft.border.all(1, theme.BORDER_SOFT),
                     expand=True
                 )
             ]),
             visible=False,
-            expand=True
+            expand=True,
+            padding=ft.padding.only(top=20),
+            bgcolor=theme.CARD_BG,
+            border=ft.border.all(1, theme.BORDER),
+            border_radius=18,
         )
 
         self.controls = [
-            ft.Text("Event Detection", size=30, weight=ft.FontWeight.BOLD),
+            ft.Text("Event Detection", size=28, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
             self.upload_area,
             ft.Row([self.browse_btn], alignment=ft.MainAxisAlignment.CENTER),
             ft.Row([self.process_btn], alignment=ft.MainAxisAlignment.CENTER),
@@ -91,10 +114,17 @@ class EventsView(ft.Column):
     def _apply_selected_file(self, path: str, name: str):
         self.selected_file = path
         self.upload_area.content.controls[3].value = name
-        self.upload_area.content.controls[3].color = ft.Colors.GREEN
+        self.upload_area.content.controls[3].color = theme.SUCCESS
         self.upload_area.update()
         self.process_btn.disabled = False
         self.process_btn.update()
+
+    def _on_upload_hover(self, e):
+        self.upload_area.border = ft.border.all(
+            1,
+            theme.TEXT_PRIMARY if e.data == "true" else theme.DROP_BORDER
+        )
+        self.upload_area.update()
 
     def _register_overlays(self):
         if self.file_picker not in self.page.overlay:
@@ -140,7 +170,11 @@ class EventsView(ft.Column):
     def _choose_file_macos(self):
         script = 'POSIX path of (choose file with prompt "Select a video file")'
         try:
-            return subprocess.check_output(["osascript", "-e", script], text=True).strip()
+            return subprocess.check_output(
+                ["osascript", "-e", script],
+                text=True,
+                stderr=subprocess.DEVNULL,
+            ).strip()
         except subprocess.CalledProcessError:
             return None
 
@@ -157,10 +191,10 @@ class EventsView(ft.Column):
             self.results_container.visible = True
             self.save_btn.visible = True
             self.status_text.value = f"Completed in {elapsed:.1f}s | Cost: ${stats.estimated_cost:.4f}"
-            self.status_text.color = ft.Colors.GREEN
+            self.status_text.color = theme.SUCCESS
         except Exception as ex:
             self.status_text.value = f"Error: {str(ex)}"
-            self.status_text.color = ft.Colors.RED
+            self.status_text.color = theme.DANGER
         self.process_btn.disabled = False
         self.progress_bar.visible = False
         self.update()
@@ -173,7 +207,7 @@ class EventsView(ft.Column):
         with open(path, 'w') as f:
             f.write(self.result_markdown.value or "")
         self.status_text.value = f"Saved to {path}"
-        self.status_text.color = ft.Colors.GREEN
+        self.status_text.color = theme.SUCCESS
         self.status_text.update()
         self._show_snack(f"Saved to {path}")
 
@@ -194,11 +228,15 @@ class EventsView(ft.Column):
         safe_name = default_name.replace('"', '\\"')
         script = f'POSIX path of (choose file name with prompt "Save results" default name "{safe_name}")'
         try:
-            return subprocess.check_output(["osascript", "-e", script], text=True).strip()
+            return subprocess.check_output(
+                ["osascript", "-e", script],
+                text=True,
+                stderr=subprocess.DEVNULL,
+            ).strip()
         except subprocess.CalledProcessError:
             return None
 
     def _show_snack(self, message: str):
-        self.page.snack_bar = ft.SnackBar(content=ft.Text(message))
+        self.page.snack_bar = ft.SnackBar(content=ft.Text(message, color=theme.TEXT_PRIMARY), bgcolor=theme.CARD_BG_SOLID)
         self.page.snack_bar.open = True
         self.page.update()
