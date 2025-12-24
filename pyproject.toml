@@ -11,10 +11,12 @@ dependencies = [
     "rich>=14.2.0",
     "typer>=0.20.1",
     "pyyaml>=6.0.2",
+    "flet[all]>=0.28.3",
 ]
 
 [project.scripts]
 video-agent = "video_agent.main:app"
+video-agent-ui = "video_agent.ui.app:main"
 
 [build-system]
 requires = ["hatchling"]

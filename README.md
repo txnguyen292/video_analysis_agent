@@ -77,6 +77,13 @@ Get a timestamped transcript with speaker labels.
 uv run video-agent transcribe path/to/video.mp4
 ```
 
+#### 5. Graphical User Interface (GUI)
+Launch the desktop application with hot-reloading:
+```bash
+uv run flet run src/video_agent/ui/app.py
+```
+This opens a window where you can drag-and-drop videos, chat, and save results.
+
 ### Options
 
 - `--model`: Specify the Gemini model ID (default: `gemini-3-pro`).
