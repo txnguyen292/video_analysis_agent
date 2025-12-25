@@ -6,7 +6,7 @@ import time
 class AgentHelper:
     def __init__(self):
         self.config = load_config()
-        self.model_id = self.config.get("model", "gemini-3-pro")
+        self.model_id = self.config.get("model", "gemini-3-flash")
         self.agent = None
 
     def _ensure_agent(self):

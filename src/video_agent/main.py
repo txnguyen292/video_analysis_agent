@@ -93,7 +93,7 @@ def resolve_output_path(output_arg: str, video_path: str) -> str:
 @app.command()
 def summarize(
     video_path: str = typer.Argument(None, help="Path to the video file"),
-    model: str = typer.Option(None, help="Gemini model ID (default: gemini-3-pro)"),
+    model: str = typer.Option(None, help="Gemini model ID (default: gemini-3-flash)"),
     output: str = typer.Option(None, "--output", "-o", help="Save output to a file"),
     config_path: str = typer.Option("config.yaml", "--config", "-c", help="Path to config file")
 ):
@@ -105,7 +105,7 @@ def summarize(
         console.print("[red]Error: Missing argument 'video_path'.[/red]")
         raise typer.Exit(code=1)
         
-    model = resolve_arg("model", model, config.get("model"), "gemini-3-pro")
+    model = resolve_arg("model", model, config.get("model"), "gemini-3-flash")
     output = resolve_arg("output", output, config.get("output"))
     final_output = resolve_output_path(output, video_path)
 
@@ -143,7 +143,7 @@ def ask(
          console.print("[red]Error: Missing argument 'question'.[/red]")
          raise typer.Exit(code=1)
 
-    model = resolve_arg("model", model, config.get("model"), "gemini-3-pro")
+    model = resolve_arg("model", model, config.get("model"), "gemini-3-flash")
     output = resolve_arg("output", output, config.get("output"))
     final_output = resolve_output_path(output, video_path)
 
@@ -174,7 +174,7 @@ def events(
         console.print("[red]Error: Missing argument 'video_path'.[/red]")
         raise typer.Exit(code=1)
         
-    model = resolve_arg("model", model, config.get("model"), "gemini-3-pro")
+    model = resolve_arg("model", model, config.get("model"), "gemini-3-flash")
     output = resolve_arg("output", output, config.get("output"))
     final_output = resolve_output_path(output, video_path)
 
@@ -205,7 +205,7 @@ def transcribe(
         console.print("[red]Error: Missing argument 'video_path'.[/red]")
         raise typer.Exit(code=1)
         
-    model = resolve_arg("model", model, config.get("model"), "gemini-3-pro")
+    model = resolve_arg("model", model, config.get("model"), "gemini-3-flash")
     output = resolve_arg("output", output, config.get("output"))
     final_output = resolve_output_path(output, video_path)
 

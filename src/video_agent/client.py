@@ -12,7 +12,7 @@ load_dotenv(dotenv_path=PROJECT_ROOT / ".env", override=False)
 load_dotenv(override=False)
 
 class GeminiVideoClient:
-    def __init__(self, api_key: None | str = None, model_id: str = "gemini-3-pro-preview"):
+    def __init__(self, api_key: None | str = None, model_id: str = "gemini-3-flash-preview"):
         self.api_key = api_key or os.getenv("GOOGLE_API_KEY")
         if not self.api_key:
             raise ValueError("GOOGLE_API_KEY not found in environment or passed as argument")

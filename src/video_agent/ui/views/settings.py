@@ -12,10 +12,10 @@ class SettingsView(ft.Column):
         
         self.model_dropdown = ft.Dropdown(
             label="Gemini Model",
-            value="gemini-3-pro",
+            value="gemini-3-flash",
             options=[
-                ft.dropdown.Option("gemini-3-pro"),
                 ft.dropdown.Option("gemini-3-flash"),
+                ft.dropdown.Option("gemini-3-pro"),
                 ft.dropdown.Option("gemini-1.5-pro"),
             ],
             width=300,
