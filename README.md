@@ -1,6 +1,6 @@
 # Video Understanding Agent
 
-AI-powered tooling that combines a Rich-powered command-line experience with a multi-view Flet desktop app to analyze, summarize, and interrogate video content using Google's **Gemini 3 Pro** family of multimodal models.
+AI-powered tooling that combines a Rich-powered command-line experience with a multi-view Flet desktop app to analyze, summarize, and interrogate video content using Google's **Gemini 3** family of multimodal models (default: **Gemini 3 Flash**).
 
 ## Features
 
@@ -64,7 +64,7 @@ uv run video-agent [COMMAND] [OPTIONS]
 
 ### Common Options
 
-- `--model` / `-m` — Override the Gemini model ID (defaults to `gemini-3-pro`). Friendly names map to preview IDs for you.
+- `--model` / `-m` — Override the Gemini model ID (defaults to `gemini-3-flash`). Friendly names map to preview IDs for you.
 - `--output` / `-o` — Save results to a directory or explicit file path. Directories yield auto-named Markdown files based on the video stem.
 - `--config` / `-c` — Provide an alternate YAML config file (defaults to `config.yaml`).
 
@@ -89,7 +89,7 @@ Provide defaults in `config.yaml` so repetitive arguments are no longer required
 
 ```yaml
 video_path: "data/inputs/talk.mp4"
-model: "gemini-3-pro"
+model: "gemini-3-flash"
 output: "data/outputs/"  # resolves to data/outputs/talk.md
 question: "What are the three main takeaways?"
 ```
