@@ -90,6 +90,7 @@ class ChatView(ft.Column):
         self.result_markdown = ft.Markdown(
             selectable=True,
             extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
+            md_style_sheet=theme.markdown_style(),
             on_tap_link=lambda e: self.page.launch_url(e.data),
         )
         
@@ -102,21 +103,30 @@ class ChatView(ft.Column):
             on_click=self.open_save_dialog
         )
 
+        self.results_header = ft.Row(
+            [
+                ft.Text("Answer", size=20, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
+                self.save_btn,
+            ],
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+        )
+        self.results_body = ft.Container(
+            content=ft.Column(
+                [self.result_markdown],
+                scroll=ft.ScrollMode.AUTO,
+                expand=True,
+            ),
+            border_radius=12,
+            padding=20,
+            bgcolor=theme.RESULT_BG,
+            border=ft.border.all(1, theme.BORDER_SOFT),
+            expand=True,
+        )
         self.results_container = ft.Container(
-            content=ft.Column([
-                ft.Row([
-                    ft.Text("Answer", size=20, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
-                    self.save_btn
-                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                ft.Container(
-                    content=self.result_markdown,
-                    border_radius=12,
-                    padding=20,
-                    bgcolor=theme.RESULT_BG,
-                    border=ft.border.all(1, theme.BORDER_SOFT),
-                    expand=True
-                )
-            ]),
+            content=ft.Column(
+                [self.results_header, self.results_body],
+                expand=True,
+            ),
             visible=False,
             expand=True,
             padding=ft.padding.only(top=20),

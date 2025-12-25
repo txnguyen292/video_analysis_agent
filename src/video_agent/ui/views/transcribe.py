@@ -64,27 +64,40 @@ class TranscribeView(ft.Column):
         self.progress_bar = ft.ProgressBar(width=400, color=theme.ACCENT, bgcolor=theme.BORDER_SOFT, visible=False)
         self.status_text = ft.Text("", color=theme.TEXT_MUTED)
         
-        self.result_markdown = ft.Markdown(selectable=True, extension_set=ft.MarkdownExtensionSet.GITHUB_WEB)
+        self.result_markdown = ft.Markdown(
+            selectable=True,
+            extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
+            md_style_sheet=theme.markdown_style(),
+        )
         self.save_btn = ft.ElevatedButton(
             "Save Transcript", icon=ft.Icons.SAVE, bgcolor=theme.SUCCESS, color=theme.BG_COLOR, visible=False,
             on_click=self.open_save_dialog
         )
 
+        self.results_header = ft.Row(
+            [
+                ft.Text("Transcript", size=20, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
+                self.save_btn,
+            ],
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+        )
+        self.results_body = ft.Container(
+            content=ft.Column(
+                [self.result_markdown],
+                scroll=ft.ScrollMode.AUTO,
+                expand=True,
+            ),
+            border_radius=12,
+            padding=20,
+            bgcolor=theme.RESULT_BG,
+            border=ft.border.all(1, theme.BORDER_SOFT),
+            expand=True,
+        )
         self.results_container = ft.Container(
-            content=ft.Column([
-                ft.Row([
-                    ft.Text("Transcript", size=20, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
-                    self.save_btn
-                ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                ft.Container(
-                    content=self.result_markdown,
-                    border_radius=12,
-                    padding=20,
-                    bgcolor=theme.RESULT_BG,
-                    border=ft.border.all(1, theme.BORDER_SOFT),
-                    expand=True
-                )
-            ]),
+            content=ft.Column(
+                [self.results_header, self.results_body],
+                expand=True,
+            ),
             visible=False,
             expand=True,
             padding=ft.padding.only(top=20),
