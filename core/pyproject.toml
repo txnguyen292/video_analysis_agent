@@ -13,8 +13,16 @@ dependencies = [
     "pyyaml>=6.0.2",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.13.0",
+    "ruff>=0.8.0",
+    "types-PyYAML>=6.0.12.20240917",
+]
+
 [project.scripts]
 personal-assistant = "personal_assistant.main:app"
+personal-assistant-checks = "personal_assistant.devtools:run_checks"
 
 [build-system]
 requires = ["hatchling"]

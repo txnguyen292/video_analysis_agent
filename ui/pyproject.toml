@@ -9,8 +9,15 @@ dependencies = [
     "personal-assistant",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.13.0",
+    "ruff>=0.8.0",
+]
+
 [project.scripts]
 personal-assistant-ui = "personal_assistant_ui.app:main"
+personal-assistant-ui-checks = "personal_assistant_ui.devtools:run_checks"
 
 [tool.uv.sources]
 personal-assistant = { workspace = true }

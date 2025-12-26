@@ -3,6 +3,22 @@ name = "video-agent-workspace"
 version = "0.0.0"
 description = "Workspace root for video agent packages"
 requires-python = ">=3.12"
+dependencies = [
+    "personal-assistant",
+    "personal-assistant-ui",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.13.0",
+    "ruff>=0.8.0",
+    "types-PyYAML>=6.0.12.20240917",
+]
+
+[project.scripts]
+video-agent-checks = "personal_assistant.devtools:run_workspace_checks"
+personal-assistant-checks = "personal_assistant.devtools:run_checks"
+personal-assistant-ui-checks = "personal_assistant_ui.devtools:run_checks"
 
 [tool.uv.workspace]
 members = ["core", "ui"]
