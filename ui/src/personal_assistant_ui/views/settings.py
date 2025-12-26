@@ -1,5 +1,7 @@
 import flet as ft
-from video_agent.ui import theme
+from personal_assistant_ui import theme
+from personal_assistant_ui.config import load_ui_config
+from personal_assistant.main import load_config
 
 
 class SettingsView(ft.Column):
@@ -9,10 +11,14 @@ class SettingsView(ft.Column):
         self.spacing = 20
         
         self.theme_colors = theme.ACCENT_PRESETS
+        ui_config = load_ui_config()
+        core_config = load_config()
+        default_model = ui_config.get("model") or core_config.get("model") or "gemini-3-flash"
+        default_theme = ui_config.get("theme") or theme.CURRENT_ACCENT_NAME
         
         self.model_dropdown = ft.Dropdown(
             label="Gemini Model",
-            value="gemini-3-flash",
+            value=default_model,
             options=[
                 ft.dropdown.Option("gemini-3-flash"),
                 ft.dropdown.Option("gemini-3-pro"),
@@ -29,7 +35,7 @@ class SettingsView(ft.Column):
         
         self.theme_dropdown = ft.Dropdown(
             label="Accent Color",
-            value=theme.CURRENT_ACCENT_NAME,
+            value=default_theme,
             options=[ft.dropdown.Option(c) for c in self.theme_colors.keys()],
             width=300,
             bgcolor=theme.INPUT_BG,

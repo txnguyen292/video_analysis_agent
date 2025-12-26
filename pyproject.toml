@@ -1,23 +1,8 @@
 [project]
-name = "video-agent"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+name = "video-agent-workspace"
+version = "0.0.0"
+description = "Workspace root for video agent packages"
 requires-python = ">=3.12"
-dependencies = [
-    "google-genai>=1.56.0",
-    "loguru>=0.7.3",
-    "python-dotenv>=1.2.1",
-    "rich>=14.2.0",
-    "typer>=0.20.1",
-    "pyyaml>=6.0.2",
-    "flet[all]>=0.28.3",
-]
 
-[project.scripts]
-video-agent = "video_agent.main:app"
-video-agent-ui = "video_agent.ui.app:main"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[tool.uv.workspace]
+members = ["core", "ui"]

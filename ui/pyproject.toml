@@ -1,0 +1,20 @@
+[project]
+name = "personal-assistant-ui"
+version = "0.1.0"
+description = "Flet desktop UI for the Video Agent core"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flet[all]==0.28.3",
+    "personal-assistant",
+]
+
+[project.scripts]
+personal-assistant-ui = "personal_assistant_ui.app:main"
+
+[tool.uv.sources]
+personal-assistant = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

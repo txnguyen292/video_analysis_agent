@@ -1,6 +1,6 @@
 import flet as ft
-from video_agent.ui.agent_helper import AgentHelper
-from video_agent.ui import theme
+from personal_assistant_ui.agent_helper import AgentHelper
+from personal_assistant_ui import theme
 import asyncio
 import os
 import subprocess

@@ -1,0 +1,6 @@
+# Default configuration for Personal Assistant core.
+
+video_path: "../data/inputs/sample.mp4"
+model: "gemini-3-flash"
+output: "../data/outputs/"
+question: "What are the three main takeaways?"

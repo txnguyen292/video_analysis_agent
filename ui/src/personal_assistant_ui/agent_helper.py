@@ -1,12 +1,18 @@
 import asyncio
-from video_agent.main import get_agent, load_config
-from video_agent.usage import UsageTracker
 import time
+from personal_assistant.main import get_agent, load_config
+from personal_assistant.usage import UsageTracker
+from personal_assistant_ui.config import load_ui_config
 
 class AgentHelper:
     def __init__(self):
-        self.config = load_config()
-        self.model_id = self.config.get("model", "gemini-3-flash")
+        self.ui_config = load_ui_config()
+        self.core_config = load_config()
+        self.model_id = (
+            self.ui_config.get("model")
+            or self.core_config.get("model")
+            or "gemini-3-flash"
+        )
         self.agent = None
 
     def _ensure_agent(self):

@@ -1,10 +1,10 @@
 import flet as ft
-from video_agent.ui import theme
-from video_agent.ui.views.summarize import SummarizeView
-from video_agent.ui.views.chat import ChatView
-from video_agent.ui.views.events import EventsView
-from video_agent.ui.views.transcribe import TranscribeView
-from video_agent.ui.views.settings import SettingsView
+from personal_assistant_ui import theme
+from personal_assistant_ui.views.summarize import SummarizeView
+from personal_assistant_ui.views.chat import ChatView
+from personal_assistant_ui.views.events import EventsView
+from personal_assistant_ui.views.transcribe import TranscribeView
+from personal_assistant_ui.views.settings import SettingsView
 
 class AppLayout(ft.Row):
     def __init__(self, page: ft.Page, selected_index: int = 0):

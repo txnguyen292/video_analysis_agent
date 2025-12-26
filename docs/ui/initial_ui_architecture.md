@@ -8,9 +8,9 @@ The UI is built using **Flet**, a framework that allows building interactive mul
 ## Architecture
 
 ### Directory Structure
-The UI code is modularized within `src/video_agent/ui/`:
+The UI code is modularized within `ui/src/personal_assistant_ui/`:
 ```
-src/video_agent/ui/
+ui/src/personal_assistant_ui/
 ├── app.py              # Application entry point and theme configuration
 ├── layout.py           # Main AppLayout component handling global navigation
 ├── agent_helper.py     # Bridge between UI and core Video Agent logic (Async)

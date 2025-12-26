@@ -7,8 +7,17 @@ import re
 from pathlib import Path
 from dotenv import load_dotenv
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-load_dotenv(dotenv_path=PROJECT_ROOT / ".env", override=False)
+def _find_env_path() -> Path | None:
+    start = Path(__file__).resolve().parent
+    for parent in (start, *start.parents):
+        candidate = parent / ".env"
+        if candidate.exists():
+            return candidate
+    return None
+
+env_path = _find_env_path()
+if env_path:
+    load_dotenv(dotenv_path=env_path, override=False)
 load_dotenv(override=False)
 
 class GeminiVideoClient:

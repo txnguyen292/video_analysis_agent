@@ -1,27 +1,26 @@
 import flet as ft
-from video_agent.ui.agent_helper import AgentHelper
-from video_agent.ui import theme
+from personal_assistant_ui.agent_helper import AgentHelper
+from personal_assistant_ui import theme
 import asyncio
 import os
 import subprocess
 
-class EventsView(ft.Column):
+class TranscribeView(ft.Column):
     def __init__(self, page: ft.Page):
         super().__init__()
         self.page = page
         self.expand = True
         self.agent_helper = AgentHelper()
         self.selected_file = None
-        self.save_default_name = "events.md"
+        self.save_default_name = "transcript.md"
         
-        # Component Reuse (Ideally refactor to base class, but keeping simple for now)
         self.file_picker = ft.FilePicker(on_result=self.on_file_picked)
         self.save_file_picker = ft.FilePicker(on_result=self.on_save_result)
 
         self.upload_area = ft.Container(
             content=ft.Column([
                 ft.Icon(ft.Icons.CLOUD_UPLOAD_OUTLINED, size=50, color=theme.ACCENT),
-                ft.Text("Drop video to detect events", size=18, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
+                ft.Text("Drop video to transcribe", size=18, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
                 ft.Text("Drag a file here or browse", color=theme.TEXT_SECONDARY),
                 ft.Text("No file selected", key="file_status", color=theme.TEXT_MUTED)
             ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
@@ -50,8 +49,8 @@ class EventsView(ft.Column):
         )
         
         self.process_btn = ft.ElevatedButton(
-            "Detect Events", 
-            icon=ft.Icons.SEARCH, 
+            "Transcribe Audio", 
+            icon=ft.Icons.RECORD_VOICE_OVER, 
             style=ft.ButtonStyle(
                 shape=ft.RoundedRectangleBorder(radius=14),
                 padding=ft.padding.symmetric(horizontal=26, vertical=14),
@@ -70,15 +69,14 @@ class EventsView(ft.Column):
             extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
             md_style_sheet=theme.markdown_style(),
         )
-        
         self.save_btn = ft.ElevatedButton(
-            "Save Events", icon=ft.Icons.SAVE, bgcolor=theme.SUCCESS, color=theme.BG_COLOR, visible=False,
+            "Save Transcript", icon=ft.Icons.SAVE, bgcolor=theme.SUCCESS, color=theme.BG_COLOR, visible=False,
             on_click=self.open_save_dialog
         )
 
         self.results_header = ft.Row(
             [
-                ft.Text("Detected Events", size=20, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
+                ft.Text("Transcript", size=20, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
                 self.save_btn,
             ],
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
@@ -109,7 +107,7 @@ class EventsView(ft.Column):
         )
 
         self.controls = [
-            ft.Text("Event Detection", size=28, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
+            ft.Text("Transcribe & Diarize", size=28, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
             self.upload_area,
             ft.Row([self.browse_btn], alignment=ft.MainAxisAlignment.CENTER),
             ft.Row([self.process_btn], alignment=ft.MainAxisAlignment.CENTER),
@@ -192,11 +190,11 @@ class EventsView(ft.Column):
         if not self.selected_file: return
         self.process_btn.disabled = True
         self.progress_bar.visible = True
-        self.status_text.value = "Detecting events..."
+        self.status_text.value = "Transcribing..."
         self.results_container.visible = False
         self.update()
         try:
-            result_text, stats, elapsed = await self.agent_helper.analyze_video(self.selected_file, 'events')
+            result_text, stats, elapsed = await self.agent_helper.analyze_video(self.selected_file, 'transcribe')
             self.result_markdown.value = result_text
             self.results_container.visible = True
             self.save_btn.visible = True

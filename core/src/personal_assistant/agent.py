@@ -1,4 +1,4 @@
-from video_agent.client import GeminiVideoClient
+from personal_assistant.client import GeminiVideoClient
 from loguru import logger
 
 class VideoAgent:

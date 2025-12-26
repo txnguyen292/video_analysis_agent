@@ -11,7 +11,7 @@ Screenshot:
 
 ## File Map
 ```
-src/video_agent/ui/
+ui/src/personal_assistant_ui/
 ├── app.py              # App entry point, background layers, rebuild hook
 ├── layout.py           # AppLayout navigation and view switching
 ├── theme.py            # Shared palette + accent presets
@@ -24,20 +24,20 @@ src/video_agent/ui/
     └── settings.py     # Model + accent settings
 ```
 
-## Entry Point (`src/video_agent/ui/app.py`)
+## Entry Point (`ui/src/personal_assistant_ui/app.py`)
 - Sets page title, theme mode, and background color.
 - Builds a `Stack` with a base gradient and a glow overlay.
 - Mounts `AppLayout` inside a padded container.
 - Exposes `page.rebuild_app()` so the UI can be rebuilt when the accent changes.
 
-## Layout & Navigation (`src/video_agent/ui/layout.py`)
+## Layout & Navigation (`ui/src/personal_assistant_ui/layout.py`)
 - `AppLayout` extends `ft.Row` and holds:
   - A left `NavigationRail` wrapped in a styled container.
   - A main `view_container` panel where the active view is rendered.
 - The selected tab index is stored so the app can rebuild without losing context.
 - `on_nav_change` swaps the view and updates the page.
 
-## Theme System (`src/video_agent/ui/theme.py`)
+## Theme System (`ui/src/personal_assistant_ui/theme.py`)
 - All colors and gradients are defined in one module.
 - Accent presets define `ACCENT`, `BUTTON_PRIMARY_BG`, and `DROP_BORDER`.
 - `apply_accent()` updates the active accent values at runtime.
@@ -59,7 +59,7 @@ Each view is a `ft.Column` with a common flow:
 - Save uses either `FilePicker.save_file()` or the macOS native dialog.
 - Writes results to disk and updates the status line + snack bar.
 
-## Agent Integration (`src/video_agent/ui/agent_helper.py`)
+## Agent Integration (`ui/src/personal_assistant_ui/agent_helper.py`)
 - `analyze_video()` runs work in `asyncio.to_thread`.
 - Uploads video, runs the selected task, and returns:
   - `response.text`

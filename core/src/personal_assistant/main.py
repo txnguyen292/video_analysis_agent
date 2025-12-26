@@ -2,8 +2,8 @@ import typer
 from rich.console import Console
 from rich.panel import Panel
 from loguru import logger
-from video_agent.client import GeminiVideoClient
-from video_agent.agent import VideoAgent
+from personal_assistant.client import GeminiVideoClient
+from personal_assistant.agent import VideoAgent
 import os
 
 app = typer.Typer(help="Video Understanding Agent CLI")
@@ -19,7 +19,7 @@ def get_agent(model_id: str):
     client = GeminiVideoClient(model_id=model_id)
     return VideoAgent(client)
 
-from video_agent.usage import UsageTracker
+from personal_assistant.usage import UsageTracker
 
 from rich.table import Table
 
@@ -54,15 +54,30 @@ def display_response(response, client, title, style, elapsed_time: float, output
 
 import yaml
 
-import yaml
+def _locate_config(path: str) -> Path | None:
+    config_path = Path(path)
+    if config_path.is_absolute():
+        return config_path if config_path.exists() else None
+    if config_path.exists():
+        return config_path
+    for parent in (Path.cwd(), *Path.cwd().parents):
+        candidate = parent / path
+        if candidate.exists():
+            return candidate
+    base = Path(__file__).resolve().parent
+    for parent in (base, *base.parents):
+        candidate = parent / path
+        if candidate.exists():
+            return candidate
+    return None
 
 def load_config(path: str = "config.yaml"):
-    config_path = Path(path)
-    if config_path.exists():
+    config_path = _locate_config(path)
+    if config_path:
         try:
             return yaml.safe_load(config_path.read_text()) or {}
         except Exception as e:
-            logger.warning(f"Failed to load config from {path}: {e}")
+            logger.warning(f"Failed to load config from {config_path}: {e}")
     return {}
 
 def resolve_arg(arg_name, cli_value, config_value, default_value=None):

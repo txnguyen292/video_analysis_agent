@@ -1,8 +1,14 @@
 import flet as ft
-from video_agent.ui.layout import AppLayout
-from video_agent.ui import theme
+from personal_assistant_ui.layout import AppLayout
+from personal_assistant_ui import theme
+from personal_assistant_ui.config import load_ui_config
 
 def app_main(page: ft.Page):
+    ui_config = load_ui_config()
+    theme_name = ui_config.get("theme")
+    if theme_name:
+        theme.apply_accent(theme_name)
+
     page.title = "Video Understanding Agent"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 0

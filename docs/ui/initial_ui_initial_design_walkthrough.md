@@ -1,6 +1,6 @@
 # Video Understanding Agent Walkthrough
 
-I have built a robust video understanding agent that leverages Google **Gemini 3 Pro** (the latest flagship model) for deep reasoning over video content.
+I have built a robust video understanding agent that leverages Google's **Gemini 3** family (defaulting to **Gemini 3 Flash**) for deep reasoning over video content.
 
 ## Features
 - **Native Video Processing**: Uploads videos to Gemini's Files API for analysis.
@@ -15,16 +15,22 @@ I have built a robust video understanding agent that leverages Google **Gemini 3
 
 ## Project Structure
 ```text
-video_agent/
+personal_assistant/
 ├── .env                  # Added manually (contains GOOGLE_API_KEY)
-├── pyproject.toml        # uv-managed dependencies + CLI entry point
-├── src/
-│   └── video_agent/
+├── core/
+│   ├── pyproject.toml    # Core dependencies + CLI entry point
+│   └── src/personal_assistant/
 │       ├── __init__.py
 │       ├── agent.py      # High-level logic
 │       ├── client.py     # Gemini API wrapper
 │       ├── main.py       # Typer CLI entry point
 │       └── usage.py      # Token cost calculator
+├── ui/
+│   ├── pyproject.toml    # UI dependencies + Flet entry point
+│   └── src/personal_assistant_ui/
+│       ├── app.py
+│       ├── layout.py
+│       └── views/
 └── tests/
 ```
 
@@ -32,48 +38,48 @@ video_agent/
 
 1. **Setup Environment**:
    ```bash
-   cd video_agent
+   cd personal_assistant/core
    uv sync
    # Ensure GOOGLE_API_KEY is in your .env file
    ```
 
 2. **Run the CLI**:
-   Once synced, you can use `uv run video-agent` directly:
+   Once synced, you can use `uv run personal-assistant` directly:
    ```bash
-   # Summarize a long video using Gemini 3 Pro (default)
-   uv run video-agent summarize path/to/video.mp4
+   # Summarize a long video using Gemini 3 Flash (default)
+   uv run personal-assistant summarize path/to/video.mp4
 
    # Transcribe and diarize audio and save to file
-   uv run video-agent transcribe path/to/video.mp4 --output transcript.txt
+   uv run personal-assistant transcribe path/to/video.mp4 --output transcript.txt
 
    # Ask a question and measure time
-   uv run video-agent ask path/to/video.mp4 "What is the key message?" -o answer.md
+   uv run personal-assistant ask path/to/video.mp4 "What is the key message?" -o answer.md
    ```
 
 3. **Using Configuration File**:
    Create a `config.yaml` to set defaults:
    ```yaml
    video_path: "path/to/default_video.mp4"
-   model: "gemini-3-pro"
+   model: "gemini-3-flash"
    output: "results/output.md"
    ```
    Now you can run commands without arguments:
    ```bash
-   uv run video-agent summarize
-   ```bash
-   uv run video-agent summarize --config my_config.yaml
+   uv run personal-assistant summarize
+   uv run personal-assistant summarize --config my_config.yaml
    ```
 
 4. **Running the Graphical UI**:
    To launch the new Flet-based desktop application:
    ```bash
-   uv run flet run src/video_agent/ui/app.py
+   cd ../ui
+   uv run flet run src/personal_assistant_ui/app.py
    ```
    **Note**: Using `flet run` ensures automatic hot-reloading during development.
    
    Or specify a custom config file:
    ```bash
-   uv run video-agent summarize --config my_config.yaml
+   uv run personal-assistant summarize --config my_config.yaml
    ```
 
 ## Demonstration
