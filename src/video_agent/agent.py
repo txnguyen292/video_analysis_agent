@@ -1,5 +1,5 @@
 from video_agent.client import GeminiVideoClient
-from loguru import logger
+
 
 class VideoAgent:
     def __init__(self, client: GeminiVideoClient):
