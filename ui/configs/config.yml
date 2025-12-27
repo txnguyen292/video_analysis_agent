@@ -1,0 +1,4 @@
+# Default configuration for Personal Assistant UI.
+
+model: "gemini-3-flash"
+theme: "Purple"

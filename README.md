@@ -1,126 +1,180 @@
 # Video Understanding Agent
 
-A powerful command-line interface (CLI) tool that leverages Google's **Gemini 3 Pro** multimodal models to analyze, understand, and extract insights from video content.
+AI-powered tooling that combines a Rich-powered command-line experience with a multi-view Flet desktop app to analyze, summarize, and interrogate video content using Google's **Gemini 3** family of multimodal models (default: **Gemini 3 Flash**).
 
 ## Features
 
-- **Summarization**: Generate concise, timestamped summaries of video content.
-- **Q&A**: Ask specific questions about visual and audio elements in the video.
-- **Event Detection**: Identify significant events and actions with precise timestamps.
-- **Transcription & Diarization**: Transcribe audio and distinguish between different speakers.
-- **Cost & Token Tracking**: Automatically tracks token usage and provides cost estimates for each operation.
-- **Execution Timer**: Displays the total time taken for upload and processing.
-- **Smart Output Management**: Automatically saves results to files, resolving directory paths using the input video's filename.
-- **Configuration Support**: Use a `config.yaml` file to set default arguments and avoid repetitive typing.
+- **Video Summaries**: Produce concise, timestamped overviews of long-form videos.
+- **Interactive Q&A**: Ask follow-up questions about visual or audio details.
+- **Event Detection**: Highlight key moments with precise time offsets.
+- **Transcription & Diarization**: Generate speaker-separated transcripts for spoken content.
+- **Usage Insights**: Track token consumption, execution time, and estimated cost for every run.
+- **Desktop UI**: Drag-and-drop videos, switch between Summarize, Chat, Events, and Transcribe views, and save results from a single window.
+- **Config & Output Automation**: Load defaults from `config.yaml` and auto-name Markdown outputs when targeting directories.
 
 ## Prerequisites
 
-- Python 3.12 or higher
-- [uv](https://github.com/astral-sh/uv) (for dependency management)
-- A Google Cloud API Key with access to Gemini models.
+- Python 3.12 or later
+- [uv](https://github.com/astral-sh/uv) for dependency management
+- Google Cloud API key with access to Gemini models
 
-## Installation
+## Quick Start
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd video_agent
-    ```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/txnguyen292/video_analysis_agent.git
+   cd video_analysis_agent
+   ```
 
-2.  **Install dependencies:**
-    This project uses `uv` for fast dependency management.
-    ```bash
-    uv sync
-    ```
+2. **Install core dependencies**
+   ```bash
+   cd core
+   uv sync
+   ```
 
-3.  **Set up environment variables:**
-    Create a `.env` file in the root directory:
-    ```bash
-    touch .env
-    ```
-    Add your Google API key to `.env`:
-    ```env
-    GOOGLE_API_KEY=your_api_key_here
-    ```
+3. **Install UI dependencies (optional)**
+   ```bash
+   cd ../ui
+   uv sync
+   ```
 
-## Usage
+4. **Configure credentials**
+   ```bash
+   cd ..
+   touch .env
+   echo "GOOGLE_API_KEY=your_api_key_here" >> .env
+   ```
 
-You can run the agent using `uv run`:
+### Workspace Sync (All Packages at Once)
+
+If you prefer a single environment for both core + UI, you can sync the whole workspace from the repo root (similar to running `docker-compose` for both services):
 
 ```bash
-uv run video-agent [COMMAND] [ARGS]
+uv sync --all-packages
 ```
 
-### Commands
+## Running The CLI
 
-#### 1. Summarize a Video
-Generate a comprehensive summary of the video content.
+Use the `personal-assistant` script from the core package:
+
 ```bash
-uv run video-agent summarize path/to/video.mp4
+cd core
+uv run personal-assistant [COMMAND] [OPTIONS]
 ```
 
-#### 2. Ask Questions
-Ask specific questions about what's happening in the video.
-```bash
-uv run video-agent ask path/to/video.mp4 "What is the speaker wearing?"
-```
+- Summarize a video
+  ```bash
+  uv run personal-assistant summarize ../data/inputs/sample.mp4
+  ```
+- Ask a question about a scene
+  ```bash
+  uv run personal-assistant ask ../data/inputs/sample.mp4 "What is the presenter writing on the board?"
+  ```
+- Detect pivotal events
+  ```bash
+  uv run personal-assistant events ../data/inputs/sample.mp4
+  ```
+- Transcribe with diarization
+  ```bash
+  uv run personal-assistant transcribe ../data/inputs/sample.mp4
+  ```
 
-#### 3. Detect Events
-List significant events with timestamps.
-```bash
-uv run video-agent events path/to/video.mp4
-```
+### Common Options
 
-#### 4. Transcribe and Diarize
-Get a timestamped transcript with speaker labels.
-```bash
-uv run video-agent transcribe path/to/video.mp4
-```
+- `--model` / `-m` — Override the Gemini model ID (defaults to `gemini-3-flash`). Friendly names map to preview IDs for you.
+- `--output` / `-o` — Save results to a directory or explicit file path. Directories yield auto-named Markdown files based on the video stem.
+- `--config` / `-c` — Provide an alternate YAML config file (defaults to `config.yaml`, searched from the current directory upward).
 
-### Options
+## Launching The Desktop UI
 
-- `--model`: Specify the Gemini model ID (default: `gemini-3-pro`).
-- `--output` / `-o`: Save the output to a specific file or directory.
-- `--config` / `-c`: Path to a custom YAML configuration file (default: `config.yaml`).
+The desktop experience reuses the same agent logic under the hood and surfaces four task-specific views.
+
+- Launch with the packaged entry point (recommended):
+  ```bash
+  cd ui
+  uv run personal-assistant-ui
+  ```
+- Enable hot reloading during development:
+  ```bash
+  uv run flet run src/personal_assistant_ui/app.py
+  ```
+
+Within the app you can drag videos onto the canvas, view progress feedback, inspect Markdown results, and save outputs to any local path.
 
 ## Configuration
 
-You can define default values for arguments in a `config.yaml` file to simplify your workflow. The CLI will automatically look for this file in the current directory.
+Provide defaults in `config.yaml` (repo root) so repetitive arguments are no longer required. Template configs also live in `core/configs/config.yml` and `ui/configs/config.yml` if you prefer component-specific defaults.
 
-**Example `config.yaml`:**
 ```yaml
-# Default configuration
-video_path: "data/my_speech.mp4"
-model: "gemini-3-pro"
-output: "results/"  # Will save as results/my_speech.md
+video_path: "data/inputs/talk.mp4"
+model: "gemini-3-flash"
+output: "data/outputs/"  # resolves to data/outputs/talk.md
+question: "What are the three main takeaways?"
 ```
 
-With this config, you can simply run:
+With a config in place the following is enough to process a video:
+
 ```bash
-uv run video-agent summarize
+cd core
+uv run personal-assistant summarize
 ```
 
-### Smart Output Path Resolution
+Use a component config explicitly:
 
-If the `--output` argument (or config value) is a directory (e.g., `outputs/`), the agent will automatically save the result as a Markdown file with the same name as the input video.
+```bash
+cd core
+uv run personal-assistant summarize --config configs/config.yml
+```
 
-Example:
-- Input: `data/meeting_recording.mp4`
-- Output Arg: `results/`
-- Result Saved To: `results/meeting_recording.md`
+### Smart Output Resolution
+
+When `--output` (or the config value) targets a directory, the agent saves a Markdown file named after the input video. For example, running `uv run personal-assistant summarize ../data/inputs/session.mp4 -o ../data/outputs/` creates `../data/outputs/session.md`.
 
 ## Project Structure
 
 ```text
-video_agent/
-├── .env                  # API Credentials
-├── config.yaml           # Optional configuration
-├── pyproject.toml        # Project dependencies and metadata
-├── README.md             # Project documentation
-├── src/
-│   └── video_agent/
-│       ├── main.py       # CLI Entry Point
-│       ├── client.py     # Gemini API Client
-│       ├── agent.py      # Agent Logic & Prompts
-│       └── usage.py      # Token & Cost Tracking
+video_analysis_agent/
+├── config.yaml            # Optional runtime defaults
+├── core/
+│   ├── pyproject.toml     # Core dependencies and CLI entry point
+│   └── src/
+│       └── personal_assistant/
+│           ├── __init__.py
+│           ├── agent.py       # High-level Gemini prompt orchestration
+│           ├── client.py      # Gemini Files API client wrapper
+│           ├── main.py        # Typer CLI entry point
+│           └── usage.py       # Token usage & cost utilities
+├── ui/
+│   ├── pyproject.toml     # UI dependencies and Flet entry point
+│   └── src/
+│       └── personal_assistant_ui/
+│           ├── app.py     # Flet application bootstrap
+│           ├── layout.py  # Navigation rail and view routing
+│           ├── agent_helper.py
+│           ├── components/
+│           ├── storage/
+│           │   ├── data/
+│           │   └── temp/
+│           └── views/
+│               ├── chat.py
+│               ├── events.py
+│               ├── settings.py
+│               ├── summarize.py
+│               └── transcribe.py
+├── data/
+│   ├── inputs/            # Source videos for local testing
+│   └── outputs/           # Markdown results generated by the agent
+├── docs/
+│   ├── ui/
+│   │   ├── ui_current_architecture.md         # Current UI architecture
+│   │   ├── initial_ui_architecture.md         # Initial UI architecture notes
+│   │   ├── initial_ui_review.md               # Initial UI review notes
+│   │   └── initial_ui_initial_design_walkthrough.md
+│   └── walkthrough.md     # CLI and agent walkthrough
+└── tests/                 # Pytest suite placeholder
 ```
+
+## Additional Resources
+
+- Read the UI deep dive in [docs/ui/initial_ui_architecture.md](docs/ui/initial_ui_architecture.md).
+- Follow the end-to-end CLI walkthrough in [docs/walkthrough.md](docs/walkthrough.md).

@@ -1,0 +1,30 @@
+[project]
+name = "personal-assistant"
+version = "0.1.0"
+description = "Core video understanding agent logic and CLI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "google-genai>=1.56.0",
+    "loguru>=0.7.3",
+    "python-dotenv>=1.2.1",
+    "rich>=14.2.0",
+    "typer>=0.20.1",
+    "pyyaml>=6.0.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.13.0",
+    "ruff>=0.8.0",
+    "types-PyYAML>=6.0.12.20240917",
+]
+
+[project.scripts]
+personal-assistant = "personal_assistant.main:app"
+personal-assistant-checks = "personal_assistant.devtools:run_checks"
+video-agent-checks = "personal_assistant.devtools:run_workspace_checks"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

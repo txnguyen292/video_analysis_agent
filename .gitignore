@@ -4,3 +4,7 @@ data/
 __pycache__
 .venv
 AGENTS.md
+.mypy_cache
+.vscode/
+.ruff_cache/
+.ipynb_checkpoints/

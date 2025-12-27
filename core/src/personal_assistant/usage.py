@@ -37,7 +37,9 @@ class UsageTracker:
     }
 
     @staticmethod
-    def calculate_cost(model_id: str, prompt_tokens: int, completion_tokens: int) -> float:
+    def calculate_cost(
+        model_id: str, prompt_tokens: int, completion_tokens: int
+    ) -> float:
         # Normalize model_id to lower case
         model_id = model_id.lower()
 
