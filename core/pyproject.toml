@@ -23,6 +23,7 @@ dev = [
 [project.scripts]
 personal-assistant = "personal_assistant.main:app"
 personal-assistant-checks = "personal_assistant.devtools:run_checks"
+video-agent-checks = "personal_assistant.devtools:run_workspace_checks"
 
 [build-system]
 requires = ["hatchling"]

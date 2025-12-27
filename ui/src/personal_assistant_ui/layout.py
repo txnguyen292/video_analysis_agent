@@ -6,6 +6,7 @@ from personal_assistant_ui.views.events import EventsView
 from personal_assistant_ui.views.transcribe import TranscribeView
 from personal_assistant_ui.views.settings import SettingsView
 
+
 class AppLayout(ft.Row):
     def __init__(self, page: ft.Page, selected_index: int = 0):
         super().__init__()
@@ -20,7 +21,7 @@ class AppLayout(ft.Row):
             TranscribeView,
             SettingsView,
         ]
-        
+
         # Current active view
         self.current_view = self._view_classes[self.selected_index](self.page)
         self.view_container = ft.Container(
@@ -54,28 +55,40 @@ class AppLayout(ft.Row):
             destinations=[
                 ft.NavigationRailDestination(
                     icon=ft.Icon(ft.Icons.SUMMARIZE_OUTLINED, color=theme.NAV_ICON),
-                    selected_icon=ft.Icon(ft.Icons.SUMMARIZE, color=theme.NAV_ICON_SELECTED),
-                    label="Summarize"
+                    selected_icon=ft.Icon(
+                        ft.Icons.SUMMARIZE, color=theme.NAV_ICON_SELECTED
+                    ),
+                    label="Summarize",
                 ),
                 ft.NavigationRailDestination(
                     icon=ft.Icon(ft.Icons.CHAT_BUBBLE_OUTLINE, color=theme.NAV_ICON),
-                    selected_icon=ft.Icon(ft.Icons.CHAT_BUBBLE, color=theme.NAV_ICON_SELECTED),
-                    label="Chat"
+                    selected_icon=ft.Icon(
+                        ft.Icons.CHAT_BUBBLE, color=theme.NAV_ICON_SELECTED
+                    ),
+                    label="Chat",
                 ),
                 ft.NavigationRailDestination(
                     icon=ft.Icon(ft.Icons.EVENT_NOTE_OUTLINED, color=theme.NAV_ICON),
-                    selected_icon=ft.Icon(ft.Icons.EVENT_NOTE, color=theme.NAV_ICON_SELECTED),
-                    label="Events"
+                    selected_icon=ft.Icon(
+                        ft.Icons.EVENT_NOTE, color=theme.NAV_ICON_SELECTED
+                    ),
+                    label="Events",
                 ),
                 ft.NavigationRailDestination(
-                    icon=ft.Icon(ft.Icons.RECORD_VOICE_OVER_OUTLINED, color=theme.NAV_ICON),
-                    selected_icon=ft.Icon(ft.Icons.RECORD_VOICE_OVER, color=theme.NAV_ICON_SELECTED),
-                    label="Transcribe"
+                    icon=ft.Icon(
+                        ft.Icons.RECORD_VOICE_OVER_OUTLINED, color=theme.NAV_ICON
+                    ),
+                    selected_icon=ft.Icon(
+                        ft.Icons.RECORD_VOICE_OVER, color=theme.NAV_ICON_SELECTED
+                    ),
+                    label="Transcribe",
                 ),
                 ft.NavigationRailDestination(
                     icon=ft.Icon(ft.Icons.SETTINGS_OUTLINED, color=theme.NAV_ICON),
-                    selected_icon=ft.Icon(ft.Icons.SETTINGS, color=theme.NAV_ICON_SELECTED),
-                    label="Settings"
+                    selected_icon=ft.Icon(
+                        ft.Icons.SETTINGS, color=theme.NAV_ICON_SELECTED
+                    ),
+                    label="Settings",
                 ),
             ],
             on_change=self.on_nav_change,

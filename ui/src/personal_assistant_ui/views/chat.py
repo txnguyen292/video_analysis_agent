@@ -5,6 +5,7 @@ import asyncio
 import os
 import subprocess
 
+
 class ChatView(ft.Column):
     def __init__(self, page: ft.Page):
         super().__init__()
@@ -13,18 +14,31 @@ class ChatView(ft.Column):
         self.agent_helper = AgentHelper()
         self.selected_file = None
         self.save_default_name = "answer.md"
-        
+
         # UI Components
         self.file_picker = ft.FilePicker(on_result=self.on_file_picked)
         self.save_file_picker = ft.FilePicker(on_result=self.on_save_result)
 
         self.upload_area = ft.Container(
-            content=ft.Column([
-                ft.Icon(ft.Icons.CLOUD_UPLOAD_OUTLINED, size=40, color=theme.ACCENT),
-                ft.Text("Select Video for Chat", size=16, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
-                ft.Text("Click to browse", color=theme.TEXT_SECONDARY),
-                ft.Text("No file selected", key="file_status", color=theme.TEXT_MUTED)
-            ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+            content=ft.Column(
+                [
+                    ft.Icon(
+                        ft.Icons.CLOUD_UPLOAD_OUTLINED, size=40, color=theme.ACCENT
+                    ),
+                    ft.Text(
+                        "Select Video for Chat",
+                        size=16,
+                        weight=ft.FontWeight.BOLD,
+                        color=theme.TEXT_PRIMARY,
+                    ),
+                    ft.Text("Click to browse", color=theme.TEXT_SECONDARY),
+                    ft.Text(
+                        "No file selected", key="file_status", color=theme.TEXT_MUTED
+                    ),
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            ),
             border=ft.border.all(1, theme.DROP_BORDER),
             border_radius=18,
             padding=20,
@@ -34,7 +48,7 @@ class ChatView(ft.Column):
             on_click=self.open_file_picker,
             on_hover=self._on_upload_hover,
             animate=ft.Animation(200, "easeOut"),
-            height=150
+            height=150,
         )
 
         self.browse_btn = ft.OutlinedButton(
@@ -49,7 +63,7 @@ class ChatView(ft.Column):
                 shape=ft.RoundedRectangleBorder(radius=14),
             ),
         )
-        
+
         self.question_field = ft.TextField(
             label="Ask a question about the video...",
             multiline=True,
@@ -68,44 +82,59 @@ class ChatView(ft.Column):
             border_radius=12,
             content_padding=ft.padding.symmetric(horizontal=14, vertical=12),
         )
-        
+
         self.ask_btn = ft.IconButton(
             icon=ft.Icons.SEND,
             icon_color=theme.TEXT_PRIMARY,
             on_click=self.ask_question,
             disabled=True,
             style=ft.ButtonStyle(
-                bgcolor={ft.ControlState.DISABLED: theme.BORDER_SOFT, "": theme.BUTTON_PRIMARY_BG},
-                color={ft.ControlState.DISABLED: theme.TEXT_DIM, "": theme.TEXT_PRIMARY},
+                bgcolor={
+                    ft.ControlState.DISABLED: theme.BORDER_SOFT,
+                    "": theme.BUTTON_PRIMARY_BG,
+                },
+                color={
+                    ft.ControlState.DISABLED: theme.TEXT_DIM,
+                    "": theme.TEXT_PRIMARY,
+                },
                 shape=ft.RoundedRectangleBorder(radius=12),
                 padding=12,
-            )
+            ),
         )
-        
-        self.chat_input_row = ft.Row([self.question_field, self.ask_btn], alignment=ft.MainAxisAlignment.CENTER)
-        
-        self.progress_bar = ft.ProgressBar(width=400, color=theme.ACCENT, bgcolor=theme.BORDER_SOFT, visible=False)
+
+        self.chat_input_row = ft.Row(
+            [self.question_field, self.ask_btn], alignment=ft.MainAxisAlignment.CENTER
+        )
+
+        self.progress_bar = ft.ProgressBar(
+            width=400, color=theme.ACCENT, bgcolor=theme.BORDER_SOFT, visible=False
+        )
         self.status_text = ft.Text("", color=theme.TEXT_MUTED)
-        
+
         self.result_markdown = ft.Markdown(
             selectable=True,
             extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
             md_style_sheet=theme.markdown_style(),
             on_tap_link=lambda e: self.page.launch_url(e.data),
         )
-        
+
         self.save_btn = ft.ElevatedButton(
             "Save Answer",
             icon=ft.Icons.SAVE,
             bgcolor=theme.SUCCESS,
             color=theme.BG_COLOR,
             visible=False,
-            on_click=self.open_save_dialog
+            on_click=self.open_save_dialog,
         )
 
         self.results_header = ft.Row(
             [
-                ft.Text("Answer", size=20, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
+                ft.Text(
+                    "Answer",
+                    size=20,
+                    weight=ft.FontWeight.BOLD,
+                    color=theme.TEXT_PRIMARY,
+                ),
                 self.save_btn,
             ],
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
@@ -136,13 +165,21 @@ class ChatView(ft.Column):
         )
 
         self.controls = [
-            ft.Text("Chat with Video", size=28, weight=ft.FontWeight.BOLD, color=theme.TEXT_PRIMARY),
+            ft.Text(
+                "Chat with Video",
+                size=28,
+                weight=ft.FontWeight.BOLD,
+                color=theme.TEXT_PRIMARY,
+            ),
             self.upload_area,
             ft.Row([self.browse_btn], alignment=ft.MainAxisAlignment.CENTER),
             ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
             self.chat_input_row,
-            ft.Column([self.progress_bar, self.status_text], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-            self.results_container
+            ft.Column(
+                [self.progress_bar, self.status_text],
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            ),
+            self.results_container,
         ]
 
     def on_file_picked(self, e: ft.FilePickerResultEvent):
@@ -161,8 +198,7 @@ class ChatView(ft.Column):
 
     def _on_upload_hover(self, e):
         self.upload_area.border = ft.border.all(
-            1,
-            theme.TEXT_PRIMARY if e.data == "true" else theme.DROP_BORDER
+            1, theme.TEXT_PRIMARY if e.data == "true" else theme.DROP_BORDER
         )
         self.upload_area.update()
 
@@ -221,28 +257,32 @@ class ChatView(ft.Column):
     async def ask_question(self, e):
         if not self.selected_file or not self.question_field.value:
             return
-            
+
         self.ask_btn.disabled = True
         self.question_field.disabled = True
         self.progress_bar.visible = True
         self.status_text.value = "Analyzing video..."
         self.results_container.visible = False
         self.update()
-        
+
         try:
             query = self.question_field.value
-            result_text, stats, elapsed = await self.agent_helper.analyze_video(self.selected_file, 'ask', query)
-            
+            result_text, stats, elapsed = await self.agent_helper.analyze_video(
+                self.selected_file, "ask", query
+            )
+
             self.result_markdown.value = result_text
             self.results_container.visible = True
             self.save_btn.visible = True
-            self.status_text.value = f"Answered in {elapsed:.1f}s | Cost: ${stats.estimated_cost:.4f}"
+            self.status_text.value = (
+                f"Answered in {elapsed:.1f}s | Cost: ${stats.estimated_cost:.4f}"
+            )
             self.status_text.color = theme.SUCCESS
-            
+
         except Exception as ex:
             self.status_text.value = f"Error: {str(ex)}"
             self.status_text.color = theme.DANGER
-        
+
         self.ask_btn.disabled = False
         self.question_field.disabled = False
         self.progress_bar.visible = False
@@ -253,7 +293,7 @@ class ChatView(ft.Column):
             self._write_result(e.path)
 
     def _write_result(self, path: str):
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             f.write(self.result_markdown.value or "")
         self.status_text.value = f"Saved to {path}"
         self.status_text.color = theme.SUCCESS
@@ -286,6 +326,9 @@ class ChatView(ft.Column):
             return None
 
     def _show_snack(self, message: str):
-        self.page.snack_bar = ft.SnackBar(content=ft.Text(message, color=theme.TEXT_PRIMARY), bgcolor=theme.CARD_BG_SOLID)
+        self.page.snack_bar = ft.SnackBar(
+            content=ft.Text(message, color=theme.TEXT_PRIMARY),
+            bgcolor=theme.CARD_BG_SOLID,
+        )
         self.page.snack_bar.open = True
         self.page.update()

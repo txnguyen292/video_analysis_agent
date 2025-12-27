@@ -3,6 +3,7 @@ from personal_assistant_ui.layout import AppLayout
 from personal_assistant_ui import theme
 from personal_assistant_ui.config import load_ui_config
 
+
 def app_main(page: ft.Page):
     ui_config = load_ui_config()
     theme_name = ui_config.get("theme")
@@ -42,8 +43,10 @@ def app_main(page: ft.Page):
     page.add(root)
     page.update()
 
+
 def main():
     ft.app(target=app_main)
+
 
 if __name__ == "__main__":
     main()

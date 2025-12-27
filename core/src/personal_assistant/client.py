@@ -1,9 +1,15 @@
 import os
 import re
+import shutil
+import tempfile
+import time
 from pathlib import Path
+from typing import Any
+
 from dotenv import load_dotenv
 from google import genai
 from loguru import logger
+
 
 def _find_env_path() -> Path | None:
     start = Path(__file__).resolve().parent
@@ -13,6 +19,7 @@ def _find_env_path() -> Path | None:
             return candidate
     return None
 
+
 env_path = _find_env_path()
 if env_path:
     load_dotenv(dotenv_path=env_path, override=False)
@@ -20,15 +27,19 @@ load_dotenv(override=False)
 
 
 class GeminiVideoClient:
-    def __init__(self, api_key: None | str = None, model_id: str = "gemini-3-flash-preview"):
+    def __init__(
+        self, api_key: str | None = None, model_id: str = "gemini-3-flash-preview"
+    ) -> None:
         self.api_key = api_key or os.getenv("GOOGLE_API_KEY")
         if not self.api_key:
-            raise ValueError("GOOGLE_API_KEY not found in environment or passed as argument")
+            raise ValueError(
+                "GOOGLE_API_KEY not found in environment or passed as argument"
+            )
 
         self.client = genai.Client(api_key=self.api_key)
         self.model_id = model_id
 
-    def upload_video(self, video_path: str, console=None):
+    def upload_video(self, video_path: str, console: Any | None = None) -> Any:
         """Uploads a video to Gemini's Files API."""
         # Sanitize filename for display_name to avoid encoding issues in API headers
         # Some API headers or SDK internals may not handle Unicode display names correctly.
@@ -59,7 +70,7 @@ class GeminiVideoClient:
         if not video_name:
             raise ValueError("Uploaded video missing file name")
 
-        def get_state_name(file_obj) -> str | None:
+        def get_state_name(file_obj: Any) -> str | None:
             state = getattr(file_obj, "state", None)
             return getattr(state, "name", None)
 
@@ -100,7 +111,7 @@ class GeminiVideoClient:
         logger.info(f"Video uploaded successfully: {video_file.uri}")
         return video_file
 
-    def analyze_video(self, video_file, prompt: str):
+    def analyze_video(self, video_file: Any, prompt: str) -> Any:
         """Sends a prompt with video context to Gemini."""
         logger.info(f"Analyzing video with prompt: {prompt}")
         response = self.client.models.generate_content(

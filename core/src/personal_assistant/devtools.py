@@ -9,6 +9,11 @@ def _run(command: list[str], cwd: Path) -> None:
     subprocess.run(command, cwd=cwd, check=True)
 
 
+def _run_commands(commands: list[list[str]], cwd: Path) -> None:
+    for command in commands:
+        _run(command, cwd=cwd)
+
+
 def _core_root() -> Path:
     return Path(__file__).resolve().parents[2]
 
@@ -19,25 +24,28 @@ def _workspace_root() -> Path:
 
 def run_checks() -> None:
     root = _core_root()
-    _run(["uv", "sync", "--extra", "dev", "--active"], cwd=root)
-    _run(["uv", "run", "ruff", "check", "src"], cwd=root)
-    _run(["uv", "run", "ruff", "format", "--check", "src"], cwd=root)
-    _run(["uv", "run", "mypy", "src"], cwd=root)
-    _run(["uv", "run", "python", "-m", "pip", "check"], cwd=root)
-    _run(["uv", "run", "python", "-m", "compileall", "-q", "src"], cwd=root)
+    commands = [
+        ["uv", "sync", "--extra", "dev", "--active"],
+        ["uv", "run", "ruff", "check", "src"],
+        ["uv", "run", "ruff", "format", "--check", "src"],
+        ["uv", "run", "mypy", "src"],
+        ["uv", "pip", "check"],
+        ["uv", "run", "python", "-m", "compileall", "-q", "src"],
+    ]
+    _run_commands(commands, cwd=root)
 
 
 def run_workspace_checks() -> None:
     root = _workspace_root()
-    _run(["uv", "sync", "--extra", "dev", "--active"], cwd=root)
-    _run(["uv", "run", "ruff", "check", "core/src", "ui/src"], cwd=root)
-    _run(["uv", "run", "ruff", "format", "--check", "core/src", "ui/src"], cwd=root)
-    _run(["uv", "run", "mypy", "core/src"], cwd=root)
-    _run(["uv", "run", "python", "-m", "pip", "check"], cwd=root)
-    _run(
+    commands = [
+        ["uv", "sync", "--extra", "dev", "--active"],
+        ["uv", "run", "ruff", "check", "core/src", "ui/src"],
+        ["uv", "run", "ruff", "format", "--check", "core/src", "ui/src"],
+        ["uv", "run", "mypy", "core/src"],
+        ["uv", "pip", "check"],
         ["uv", "run", "python", "-m", "compileall", "-q", "core/src", "ui/src"],
-        cwd=root,
-    )
+    ]
+    _run_commands(commands, cwd=root)
 
 
 if __name__ == "__main__":

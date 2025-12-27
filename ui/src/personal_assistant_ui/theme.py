@@ -117,15 +117,29 @@ def markdown_style() -> ft.MarkdownStyleSheet:
     return ft.MarkdownStyleSheet(
         p_text_style=ft.TextStyle(color=TEXT_PRIMARY, size=14),
         a_text_style=ft.TextStyle(color=ACCENT),
-        h1_text_style=ft.TextStyle(color=TEXT_PRIMARY, size=22, weight=ft.FontWeight.BOLD),
-        h2_text_style=ft.TextStyle(color=TEXT_PRIMARY, size=18, weight=ft.FontWeight.BOLD),
-        h3_text_style=ft.TextStyle(color=TEXT_PRIMARY, size=16, weight=ft.FontWeight.BOLD),
-        h4_text_style=ft.TextStyle(color=TEXT_PRIMARY, size=15, weight=ft.FontWeight.BOLD),
-        h5_text_style=ft.TextStyle(color=TEXT_PRIMARY, size=14, weight=ft.FontWeight.BOLD),
-        h6_text_style=ft.TextStyle(color=TEXT_PRIMARY, size=13, weight=ft.FontWeight.BOLD),
+        h1_text_style=ft.TextStyle(
+            color=TEXT_PRIMARY, size=22, weight=ft.FontWeight.BOLD
+        ),
+        h2_text_style=ft.TextStyle(
+            color=TEXT_PRIMARY, size=18, weight=ft.FontWeight.BOLD
+        ),
+        h3_text_style=ft.TextStyle(
+            color=TEXT_PRIMARY, size=16, weight=ft.FontWeight.BOLD
+        ),
+        h4_text_style=ft.TextStyle(
+            color=TEXT_PRIMARY, size=15, weight=ft.FontWeight.BOLD
+        ),
+        h5_text_style=ft.TextStyle(
+            color=TEXT_PRIMARY, size=14, weight=ft.FontWeight.BOLD
+        ),
+        h6_text_style=ft.TextStyle(
+            color=TEXT_PRIMARY, size=13, weight=ft.FontWeight.BOLD
+        ),
         code_text_style=ft.TextStyle(color=TEXT_PRIMARY),
         blockquote_text_style=ft.TextStyle(color=TEXT_SECONDARY),
         list_bullet_text_style=ft.TextStyle(color=TEXT_PRIMARY),
-        table_head_text_style=ft.TextStyle(color=TEXT_PRIMARY, weight=ft.FontWeight.BOLD),
+        table_head_text_style=ft.TextStyle(
+            color=TEXT_PRIMARY, weight=ft.FontWeight.BOLD
+        ),
         table_body_text_style=ft.TextStyle(color=TEXT_SECONDARY),
     )
