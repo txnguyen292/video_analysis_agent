@@ -38,6 +38,10 @@ jobs:
         run: |
           mypy core/src
 
+      - name: Unit tests
+        run: |
+          pytest -m unit
+
       - name: Sanity check
         run: |
           python -m pip check
