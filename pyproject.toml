@@ -37,3 +37,16 @@ markers = [
   "unit: unit tests",
   "integration: integration tests",
 ]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.1",
+]
+
+[tool.mypy]
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+# Flet does not publish type stubs, so we must ignore missing imports
+module = "flet"
+ignore_missing_imports = true

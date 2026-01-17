@@ -37,6 +37,7 @@ class AgentHelper:
         def _run() -> tuple[str, UsageStats, float]:
             start_time = time.perf_counter()
             self._ensure_agent()
+            assert self.agent is not None
             # Upload
             print(f"Uploading {video_path}...")
             video_file = self.agent.client.upload_video(video_path)
@@ -46,11 +47,15 @@ class AgentHelper:
             if task_type == "summarize":
                 response = self.agent.get_summary(video_file)
             elif task_type == "ask":
+                assert query is not None, "Query string is required for 'ask' task"
                 response = self.agent.ask_question(video_file, query)
             elif task_type == "events":
                 response = self.agent.detect_events(video_file)
             elif task_type == "transcribe":
                 response = self.agent.transcribe_and_diarize(video_file)
+
+            if response is None:
+                raise ValueError("No response from agent")
 
             elapsed = time.perf_counter() - start_time
             stats = UsageTracker.extract_usage(response, self.model_id)

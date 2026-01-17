@@ -12,7 +12,7 @@ class TranscribeView(ft.Column):
         self.page = page
         self.expand = True
         self.agent_helper = AgentHelper()
-        self.selected_file = None
+        self.selected_file: str | None = None
         self.save_default_name = "transcript.md"
 
         self.file_picker = ft.FilePicker(on_result=self.on_file_picked)

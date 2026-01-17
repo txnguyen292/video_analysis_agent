@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 import pytest
 
@@ -45,7 +44,10 @@ def test_run_workspace_checks_sequence(monkeypatch: pytest.MonkeyPatch) -> None:
     assert calls == [
         (["uv", "sync", "--extra", "dev", "--active"], Path("/workspace")),
         (["uv", "run", "ruff", "check", "core/src", "ui/src"], Path("/workspace")),
-        (["uv", "run", "ruff", "format", "--check", "core/src", "ui/src"], Path("/workspace")),
+        (
+            ["uv", "run", "ruff", "format", "--check", "core/src", "ui/src"],
+            Path("/workspace"),
+        ),
         (["uv", "run", "mypy", "core/src"], Path("/workspace")),
         (["uv", "pip", "check"], Path("/workspace")),
         (

@@ -76,7 +76,7 @@ personal_assistant/
    uv run flet run src/personal_assistant_ui/app.py
    ```
    **Note**: Using `flet run` ensures automatic hot-reloading during development.
-   
+
    Or specify a custom config file:
    ```bash
    uv run personal-assistant summarize --config my_config.yaml

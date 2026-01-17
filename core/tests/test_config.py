@@ -19,7 +19,9 @@ def test_locate_config_absolute_path(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
-def test_locate_config_relative_searches_cwd(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+def test_locate_config_relative_searches_cwd(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     config_path = tmp_path / "config.yaml"
     config_path.write_text("model: gemini-3-pro\n", encoding="utf-8")
 
@@ -32,7 +34,9 @@ def test_locate_config_relative_searches_cwd(monkeypatch: pytest.MonkeyPatch, tm
 
 
 @pytest.mark.unit
-def test_load_config_returns_empty_when_missing(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+def test_load_config_returns_empty_when_missing(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     monkeypatch.chdir(tmp_path)
 
     data = config_module.load_config("missing.yaml")
@@ -41,9 +45,13 @@ def test_load_config_returns_empty_when_missing(monkeypatch: pytest.MonkeyPatch,
 
 
 @pytest.mark.unit
-def test_load_config_parses_yaml(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+def test_load_config_parses_yaml(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     config_path = tmp_path / "config.yaml"
-    config_path.write_text("model: gemini-3-flash\noutput: results/\n", encoding="utf-8")
+    config_path.write_text(
+        "model: gemini-3-flash\noutput: results/\n", encoding="utf-8"
+    )
 
     monkeypatch.chdir(tmp_path)
 

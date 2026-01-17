@@ -12,7 +12,7 @@ class ChatView(ft.Column):
         self.page = page
         self.expand = True
         self.agent_helper = AgentHelper()
-        self.selected_file = None
+        self.selected_file: str | None = None
         self.save_default_name = "answer.md"
 
         # UI Components

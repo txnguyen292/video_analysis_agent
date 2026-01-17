@@ -1,12 +1,12 @@
-# Video Understanding Agent  
+# Video Understanding Agent
 ## Conversational UX Proposal (Final)
 
 ---
 
 ## Design Philosophy
 
-The application behaves as a **conversational agent**, not a task-based tool.  
-The UI should feel calm, Apple-like, and secondary to the dialogue.  
+The application behaves as a **conversational agent**, not a task-based tool.
+The UI should feel calm, Apple-like, and secondary to the dialogue.
 **The conversation *is* the interface.**
 
 ---
