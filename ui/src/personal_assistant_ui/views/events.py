@@ -12,7 +12,7 @@ class EventsView(ft.Column):
         self.page = page
         self.expand = True
         self.agent_helper = AgentHelper()
-        self.selected_file = None
+        self.selected_file: str | None = None
         self.save_default_name = "events.md"
 
         # Component Reuse (Ideally refactor to base class, but keeping simple for now)
