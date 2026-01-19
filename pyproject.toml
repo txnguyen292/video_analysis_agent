@@ -36,6 +36,7 @@ addopts = "-ra"
 markers = [
   "unit: unit tests",
   "integration: integration tests",
+  "adk: ADK agent tests",
 ]
 
 [dependency-groups]
