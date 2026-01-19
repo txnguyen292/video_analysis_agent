@@ -1,0 +1,1 @@
+"""ADK-backed assistant package."""

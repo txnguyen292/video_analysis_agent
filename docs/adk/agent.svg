@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <style>
+    .box { fill: #ffffff; stroke: #222222; stroke-width: 2; }
+    .title { font: 16px Arial, sans-serif; font-weight: bold; fill: #111111; }
+    .text { font: 13px Arial, sans-serif; fill: #111111; }
+    .arrow { stroke: #222222; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#222222" />
+    </marker>
+  </defs>
+
+  <rect x="40" y="40" width="240" height="70" class="box" />
+  <text x="60" y="70" class="title">User/UI</text>
+  <text x="60" y="92" class="text">message + optional session_id</text>
+
+  <rect x="330" y="40" width="240" height="70" class="box" />
+  <text x="350" y="70" class="title">chat()</text>
+  <text x="350" y="92" class="text">validate + session ID</text>
+
+  <rect x="620" y="40" width="240" height="70" class="box" />
+  <text x="640" y="70" class="title">_build_runner()</text>
+  <text x="640" y="92" class="text">Runner + InMemorySessionService</text>
+
+  <rect x="620" y="150" width="240" height="90" class="box" />
+  <text x="640" y="178" class="title">LlmAgent</text>
+  <text x="640" y="200" class="text">name=personal_assistant</text>
+  <text x="640" y="220" class="text">model=ADK_MODEL</text>
+
+  <rect x="330" y="170" width="240" height="70" class="box" />
+  <text x="350" y="200" class="title">_run_sync()</text>
+  <text x="350" y="222" class="text">runner.run_async</text>
+
+  <rect x="40" y="170" width="240" height="70" class="box" />
+  <text x="60" y="200" class="title">ChatResult</text>
+  <text x="60" y="222" class="text">session_id + response_text</text>
+
+  <rect x="330" y="280" width="240" height="70" class="box" />
+  <text x="350" y="310" class="title">Error path</text>
+  <text x="350" y="332" class="text">ConnectionError -> ChatError</text>
+
+  <line x1="280" y1="75" x2="330" y2="75" class="arrow" />
+  <line x1="570" y1="75" x2="620" y2="75" class="arrow" />
+  <line x1="740" y1="110" x2="740" y2="150" class="arrow" />
+  <line x1="620" y1="185" x2="570" y2="205" class="arrow" />
+  <line x1="330" y1="205" x2="280" y2="205" class="arrow" />
+  <line x1="450" y1="240" x2="450" y2="280" class="arrow" />
+</svg>

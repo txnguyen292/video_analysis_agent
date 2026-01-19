@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any, TypeVar
 
 import yaml
+from dotenv import load_dotenv
 from loguru import logger
 
 T = TypeVar("T")
+
+_ENV_LOADED = False
 
 
 def _locate_config(path: str) -> Path | None:
@@ -25,6 +29,46 @@ def _locate_config(path: str) -> Path | None:
         if candidate.exists():
             return candidate
     return None
+
+
+def _find_env_path() -> Path | None:
+    for parent in (Path.cwd(), *Path.cwd().parents):
+        candidate = parent / ".env"
+        if candidate.exists():
+            return candidate
+    base = Path(__file__).resolve().parent
+    for parent in (base, *base.parents):
+        candidate = parent / ".env"
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def load_env() -> None:
+    global _ENV_LOADED
+    if _ENV_LOADED:
+        return
+    env_path = _find_env_path()
+    if env_path:
+        load_dotenv(dotenv_path=env_path, override=False)
+    load_dotenv(override=False)
+    _ENV_LOADED = True
+
+
+def get_env(key: str, default: str | None = None) -> str | None:
+    load_env()
+    return os.getenv(key, default)
+
+
+def get_redis_settings() -> tuple[str, int]:
+    host = get_env("REDIS_HOST", "localhost") or "localhost"
+    port_raw = get_env("REDIS_PORT", "6379") or "6379"
+    try:
+        port = int(port_raw)
+    except ValueError:
+        logger.warning(f"Invalid REDIS_PORT '{port_raw}', falling back to 6379")
+        port = 6379
+    return host, port
 
 
 def load_config(path: str = "config.yaml") -> dict[str, Any]:
