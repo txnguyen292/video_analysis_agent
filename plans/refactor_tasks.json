@@ -1,0 +1,133 @@
+{
+  "tasks": [
+    {
+      "task": "core: fix imports & ordering",
+      "status": "completed",
+      "description": "Remove duplicate/unused imports, add missing imports, and ensure top-level ordering in core modules.",
+      "priority": "high",
+      "comments": [
+        "Removed duplicate/unused imports in core entrypoints and normalized ordering in `core/src/personal_assistant/main.py` and `core/src/personal_assistant/agent.py`.",
+        "Added missing standard-lib imports in `core/src/personal_assistant/client.py` (shutil/tempfile/time).",
+        "Effect: cleaner import blocks, fewer runtime import errors, no behavior change."
+      ]
+    },
+    {
+      "task": "core: typing + small cleanup",
+      "status": "completed",
+      "description": "Add/adjust type hints for clarity; small refactors without behavior changes.",
+      "priority": "high",
+      "comments": [
+        "Added type hints to `VideoAgent` methods and core client methods, plus return types in `core/src/personal_assistant/main.py`.",
+        "Introduced typed config helpers in `core/src/personal_assistant/config.py`.",
+        "Effect: clearer APIs and improved static analysis without altering runtime logic."
+      ]
+    },
+    {
+      "task": "core: helper extraction",
+      "status": "completed",
+      "description": "Extract config helpers / shared utilities if needed to reduce clutter in main.",
+      "priority": "medium",
+      "comments": [
+        "Moved `_locate_config`, `load_config`, `resolve_arg`, and `resolve_output_path` into `core/src/personal_assistant/config.py`.",
+        "Updated `core/src/personal_assistant/main.py` to import helpers from the new module.",
+        "Effect: slimmer `main.py` and shared config logic without changing behavior."
+      ]
+    },
+    {
+      "task": "ui: fix imports & ordering",
+      "status": "completed",
+      "description": "Normalize imports in UI modules and add missing ones.",
+      "priority": "medium",
+      "comments": [
+        "Normalized import ordering in `ui/src/personal_assistant_ui/agent_helper.py`, `ui/src/personal_assistant_ui/config.py`, and `ui/src/personal_assistant_ui/views/settings.py`.",
+        "Updated UI settings view to import config helper from `personal_assistant.config`.",
+        "Effect: consistent import style and shared config usage across UI."
+      ]
+    },
+    {
+      "task": "ui: typing + async safety",
+      "status": "completed",
+      "description": "Add type hints and minor cleanup in UI agent helper.",
+      "priority": "medium",
+      "comments": [
+        "Added type hints and explicit return types in `ui/src/personal_assistant_ui/agent_helper.py`.",
+        "Annotated config dictionaries and async return tuple for better clarity.",
+        "Effect: improved readability and type checking without changing async flow."
+      ]
+    },
+    {
+      "task": "devtools: consistency",
+      "status": "completed",
+      "description": "Align devtools behavior across core/UI/workspace, naming, and error handling.",
+      "priority": "low",
+      "comments": [
+        "Refactored core and UI devtools to run command lists via a shared `_run_commands` helper.",
+        "Kept the same command sequence across core/UI/workspace, only differing by paths and mypy flags.",
+        "Effect: consistent output and easier maintenance for check runners."
+      ]
+    },
+    {
+      "task": "ui: fix ruff violations from checks",
+      "status": "completed",
+      "description": "Resolve ruff violations reported by video-agent-checks (E701, F841) in UI views.",
+      "priority": "high",
+      "comments": [
+        "Split one-line `if` statements in `ui/src/personal_assistant_ui/views/events.py` and `ui/src/personal_assistant_ui/views/transcribe.py` into multi-line blocks.",
+        "Removed unused `applied_name` variable in `ui/src/personal_assistant_ui/views/settings.py`.",
+        "Effect: ruff E701/F841 violations resolved without changing behavior."
+      ]
+    },
+    {
+      "task": "format: apply ruff format across core and ui",
+      "status": "completed",
+      "description": "Run ruff formatter to satisfy format checks in core/ui sources.",
+      "priority": "medium",
+      "comments": [
+        "Ran `ruff format` across `core/src` and `ui/src` to normalize formatting.",
+        "Effect: format checks now pass for previously flagged files."
+      ]
+    },
+    {
+      "task": "core: fix mypy optional typing in CLI args",
+      "status": "completed",
+      "description": "Align Typer CLI argument types with optional defaults and add assertions for mypy.",
+      "priority": "high",
+      "comments": [
+        "Updated CLI parameter annotations in `core/src/personal_assistant/main.py` to use optional types where defaults are `None`.",
+        "Added explicit `assert ... is not None` after required checks so mypy understands runtime guarantees.",
+        "Effect: mypy assignment errors resolved for CLI arg handling."
+      ]
+    },
+    {
+      "task": "devtools: use uv pip check",
+      "status": "completed",
+      "description": "Replace python -m pip check with uv pip check to avoid missing pip module errors.",
+      "priority": "medium",
+      "comments": [
+        "Swapped `python -m pip check` to `uv pip check` in core and UI devtools.",
+        "Effect: check runner no longer fails when pip isn't installed in the uv runtime."
+      ]
+    },
+    {
+      "task": "docs: align AGENTS pip check command",
+      "status": "completed",
+      "description": "Update AGENTS.md equivalent commands to use uv pip check.",
+      "priority": "low",
+      "comments": [
+        "Updated AGENTS.md to list `uv pip check` in the equivalent command list.",
+        "Effect: documentation matches the updated check runner behavior."
+      ]
+    },
+    {
+      "task": "ci: install workspace packages explicitly",
+      "status": "completed",
+      "description": "Fix CI install step to avoid editable install of workspace root and install core/ui packages directly.",
+      "priority": "high",
+      "comments": [
+        "Updated `.github/workflows/ci.yml` to install `core[dev]` and `ui[dev]` instead of the workspace root.",
+        "Adjusted ruff/mypy/compileall paths to target `core/src` and `ui/src`.",
+        "Effect: CI no longer attempts to build the workspace root and should pass package discovery."
+      ]
+    }
+  ]
+}

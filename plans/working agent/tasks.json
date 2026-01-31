@@ -1,0 +1,210 @@
+{
+  "tasks": [
+    {
+      "task": "tests: adk chat service contract",
+      "status": "completed",
+      "description": "Write failing tests for ADK chat service in personal_assistant_adk (session IDs, config loading, error handling).",
+      "priority": "high",
+      "comments": [
+        "Updated tests to target `personal_assistant_adk.agent` and removed dependency on adk_chat.",
+        "Deleted `core/src/personal_assistant/adk_chat.py`."
+      ]
+    },
+    {
+      "task": "impl: adk chat service",
+      "status": "completed",
+      "description": "Implement ADK chat service in personal_assistant_adk to satisfy contract tests.",
+      "priority": "high",
+      "comments": [
+        "Implemented `personal_assistant_adk.agent` with chat API and session handling.",
+        "Replaced adk_chat module with new package."
+      ]
+    },
+    {
+      "task": "tests: adk agent package",
+      "status": "completed",
+      "description": "Write failing tests to assert personal_assistant_adk package structure and factory entrypoint.",
+      "priority": "high",
+      "comments": [
+        "Updated `core/tests/test_adk_agent_package.py` to target `personal_assistant_adk.agent.build_agent`."
+      ]
+    },
+    {
+      "task": "impl: adk agent package",
+      "status": "completed",
+      "description": "Create personal_assistant_adk package and define the agent in agent.py.",
+      "priority": "high",
+      "comments": [
+        "Created `core/src/personal_assistant_adk/` with `agent.py` and __init__.py.",
+        "Agent wiring placeholders left for memory service implementation."
+      ]
+    },
+    {
+      "task": "tests: shared adk utils",
+      "status": "completed",
+      "description": "Write failing tests for shared ADK utils (ChatError, session ID, env helpers).",
+      "priority": "medium",
+      "comments": [
+        "Added `core/tests/test_adk_utils.py`.",
+        "Updated `core/tests/test_adk_chat_service.py` to patch utils and assert ChatError from utils."
+      ]
+    },
+    {
+      "task": "impl: shared adk utils",
+      "status": "completed",
+      "description": "Move shared helpers into personal_assistant_adk.utils and update agent usage.",
+      "priority": "medium",
+      "comments": [
+        "Added `core/src/personal_assistant_adk/utils.py` with ChatError, OpenAI key helper, and session IDs.",
+        "Updated `core/src/personal_assistant_adk/agent.py` to use utils helpers."
+      ]
+    },
+    {
+      "task": "tests: adk marker tagging",
+      "status": "completed",
+      "description": "Mark ADK-related tests so they can be selected via `-m adk`.",
+      "priority": "medium",
+      "comments": [
+        "Added `pytestmark = pytest.mark.adk` to ADK test modules."
+      ]
+    },
+    {
+      "task": "impl: adk marker config",
+      "status": "completed",
+      "description": "Register the `adk` marker in pytest config.",
+      "priority": "medium",
+      "comments": [
+        "Added `adk` marker to `[tool.pytest.ini_options]` in root pyproject.toml."
+      ]
+    },
+    {
+      "task": "fix: adk async runner test doubles",
+      "status": "completed",
+      "description": "Align ADK chat tests with async runner contract.",
+      "priority": "medium",
+      "comments": [
+        "Updated `core/tests/test_adk_chat_service.py` fakes to implement `run_async` and yield ADK-like events."
+      ]
+    },
+    {
+      "task": "docs: adk agent reference",
+      "status": "completed",
+      "description": "Document the ADK agent behavior based on agent.py.",
+      "priority": "low",
+      "comments": [
+        "Added `docs/adk/agent.md` derived from `core/src/personal_assistant_adk/agent.py`.",
+        "Superseded by agent-package docs requirement; relocation task added."
+      ]
+    },
+    {
+      "task": "docs: adk agent diagram",
+      "status": "completed",
+      "description": "Create an SVG diagram representing the ADK agent flow.",
+      "priority": "low",
+      "comments": [
+        "Added `docs/adk/agent.svg` chart based on agent.py flow.",
+        "Superseded by agent-package docs requirement; relocation task added."
+      ]
+    },
+    {
+      "task": "tests: adk runner module",
+      "status": "pending",
+      "description": "Write failing tests for the runner module and ensure agent uses it.",
+      "priority": "medium",
+      "comments": [
+        "TDD: validate runner API and agent delegation."
+      ]
+    },
+    {
+      "task": "impl: adk runner module",
+      "status": "pending",
+      "description": "Move runner logic into `personal_assistant_adk/runner.py` and wire agent to use it.",
+      "priority": "medium",
+      "comments": [
+        "Keep agent API stable; update imports/tests."
+      ]
+    },
+    {
+      "task": "docs: agent package docs",
+      "status": "pending",
+      "description": "Create agent docs inside the agent package based on agent.py.",
+      "priority": "low",
+      "comments": [
+        "Add `core/src/personal_assistant_adk/docs/agent.md` with instruction + tools list."
+      ]
+    },
+    {
+      "task": "docs: agent workflow svg",
+      "status": "pending",
+      "description": "Add a workflow diagram inside the agent package.",
+      "priority": "low",
+      "comments": [
+        "Create `core/src/personal_assistant_adk/docs/workflow.svg` based on agent flow."
+      ]
+    },
+    {
+      "task": "fix: adk session id patching",
+      "status": "completed",
+      "description": "Align tests with agent module import of generate_session_id.",
+      "priority": "medium",
+      "comments": [
+        "Updated test monkeypatch target to `personal_assistant_adk.agent.generate_session_id`."
+      ]
+    },
+    {
+      "task": "tests: redis memory service",
+      "status": "pending",
+      "description": "Write failing tests for Redis hybrid memory service (indexing + search).",
+      "priority": "high",
+      "comments": [
+        "Mock Redis + OpenAI embeddings."
+      ]
+    },
+    {
+      "task": "impl: redis memory service",
+      "status": "pending",
+      "description": "Implement RedisMemoryService to satisfy tests, including hybrid fallback.",
+      "priority": "high",
+      "comments": [
+        "Store embeddings + metadata + durable record pointer."
+      ]
+    },
+    {
+      "task": "tests: ui chat replacement",
+      "status": "pending",
+      "description": "Write failing tests for UI chat view replacement (multi-turn session).",
+      "priority": "medium",
+      "comments": [
+        "Ensure session ID persists across UI turns."
+      ]
+    },
+    {
+      "task": "impl: ui chat replacement",
+      "status": "pending",
+      "description": "Replace existing chat view with ADK chat service integration.",
+      "priority": "medium",
+      "comments": [
+        "No memory debug UI; surface friendly errors."
+      ]
+    },
+    {
+      "task": "tests: integration (redis + ui)",
+      "status": "pending",
+      "description": "Integration test with local Redis Stack and UI two-turn smoke test.",
+      "priority": "medium",
+      "comments": [
+        "Validate hybrid search wiring and session continuity."
+      ]
+    },
+    {
+      "task": "docs: update README",
+      "status": "pending",
+      "description": "Document ADK chat usage, Redis Stack startup, and .env requirements.",
+      "priority": "low",
+      "comments": [
+        "Include session ID behavior and UI notes.",
+        "Mention agent-package docs location."
+      ]
+    }
+  ]
+}

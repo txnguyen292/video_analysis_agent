@@ -4,7 +4,7 @@ import uuid
 
 import pytest
 
-from personal_assistant_adk import agent as adk_agent
+from personal_assistant_adk import run as adk_run
 from personal_assistant_adk import utils as adk_utils
 
 pytestmark = pytest.mark.adk
@@ -13,7 +13,7 @@ pytestmark = pytest.mark.adk
 @pytest.mark.unit
 def test_utils_chat_error_is_runtime_error() -> None:
     assert issubclass(adk_utils.ChatError, RuntimeError)
-    assert adk_agent.ChatError is adk_utils.ChatError
+    assert adk_run.ChatError is adk_utils.ChatError
 
 
 @pytest.mark.unit

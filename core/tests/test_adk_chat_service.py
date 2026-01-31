@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from personal_assistant_adk import agent as adk_agent
+from personal_assistant_adk import run as adk_run
 from personal_assistant_adk import utils as adk_utils
 
 pytestmark = pytest.mark.adk
@@ -55,10 +55,10 @@ def test_get_openai_api_key_required(monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.mark.unit
 def test_chat_generates_session_id(monkeypatch: pytest.MonkeyPatch) -> None:
     runner = _FakeRunner()
-    monkeypatch.setattr(adk_agent, "_build_runner", lambda: runner)
-    monkeypatch.setattr(adk_agent, "generate_session_id", lambda: "session-123")
+    monkeypatch.setattr(adk_run, "_build_runner", lambda: runner)
+    monkeypatch.setattr(adk_run, "generate_session_id", lambda: "session-123")
 
-    result = adk_agent.chat("hello", session_id=None)
+    result = adk_run.chat("hello", session_id=None)
 
     assert result.response_text == "hello"
     assert result.session_id == "session-123"
@@ -68,9 +68,9 @@ def test_chat_generates_session_id(monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.mark.unit
 def test_chat_uses_existing_session_id(monkeypatch: pytest.MonkeyPatch) -> None:
     runner = _FakeRunner()
-    monkeypatch.setattr(adk_agent, "_build_runner", lambda: runner)
+    monkeypatch.setattr(adk_run, "_build_runner", lambda: runner)
 
-    result = adk_agent.chat("ping", session_id="sess-1")
+    result = adk_run.chat("ping", session_id="sess-1")
 
     assert result.session_id == "sess-1"
     assert runner.calls == [("sess-1", "ping")]
@@ -80,7 +80,7 @@ def test_chat_uses_existing_session_id(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_chat_raises_friendly_error_on_redis_failure(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr(adk_agent, "_build_runner", lambda: _FailingRunner())
+    monkeypatch.setattr(adk_run, "_build_runner", lambda: _FailingRunner())
 
     with pytest.raises(adk_utils.ChatError, match="Redis"):
-        adk_agent.chat("hello", session_id="sess-err")
+        adk_run.chat("hello", session_id="sess-err")

@@ -1,0 +1,85 @@
+{
+  "tasks": [
+    {
+      "task": "tests: add pytest dev dependencies",
+      "status": "completed",
+      "description": "Add pytest tooling to dev extras for root/core/ui packages.",
+      "priority": "high",
+      "comments": [
+        "Added pytest, pytest-asyncio, and pytest-mock to dev extras in root, core, and ui pyproject files.",
+        "Effect: test tooling available across workspace packages."
+      ]
+    },
+    {
+      "task": "tests: add pytest configuration",
+      "status": "completed",
+      "description": "Create pytest config and markers for unit/integration tests.",
+      "priority": "high",
+      "comments": [
+        "Added `pytest.ini` at the workspace root with `unit` and `integration` markers.",
+        "Effect: pytest recognizes custom markers and uses consistent settings."
+      ]
+    },
+    {
+      "task": "tests: core config helpers",
+      "status": "completed",
+      "description": "Unit tests for config helpers in core (locate/load/resolve paths).",
+      "priority": "high",
+      "comments": [
+        "Added `core/tests/test_config.py` with unit tests for locate/load/resolve helpers.",
+        "Adjusted relative path assertion to compare resolved paths.",
+        "Effect: config helper behavior is now covered by unit tests."
+      ]
+    },
+    {
+      "task": "tests: core agent prompts",
+      "status": "completed",
+      "description": "Unit tests for VideoAgent prompt construction methods.",
+      "priority": "medium",
+      "comments": [
+        "Added `core/tests/test_agent.py` with prompt construction tests for each VideoAgent method.",
+        "Effect: ensures prompt strings and call plumbing are validated."
+      ]
+    },
+    {
+      "task": "tests: core devtools runner",
+      "status": "completed",
+      "description": "Unit tests for devtools command sequencing (mock subprocess).",
+      "priority": "medium",
+      "comments": [
+        "Added `core/tests/test_devtools.py` to validate command sequencing for core and workspace checks.",
+        "Effect: devtools runners are covered without executing external commands."
+      ]
+    },
+    {
+      "task": "tests: ui agent helper",
+      "status": "completed",
+      "description": "Unit tests for UI AgentHelper logic (mock agent + async flow).",
+      "priority": "medium",
+      "comments": [
+        "Added `ui/tests/test_agent_helper.py` with async unit tests covering all task routing branches.",
+        "Effect: UI AgentHelper routing and return values are now covered."
+      ]
+    },
+    {
+      "task": "tests: wire pytest into CI",
+      "status": "completed",
+      "description": "Add pytest invocation to CI once tests exist.",
+      "priority": "low",
+      "comments": [
+        "Added a unit test step to `.github/workflows/ci.yml` that runs `pytest -m unit`.",
+        "Effect: unit tests run on CI after lint/type checks."
+      ]
+    },
+    {
+      "task": "docs: update AGENTS test instructions",
+      "status": "completed",
+      "description": "Document unit/integration test commands in AGENTS.md.",
+      "priority": "low",
+      "comments": [
+        "Added pytest unit/integration commands to `AGENTS.md`.",
+        "Effect: local test instructions now include pytest."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    {
+      "task": "tests: update ADK chat tests to use run module",
+      "status": "completed",
+      "comment": "Updated tests to import personal_assistant_adk.run and patch run helpers."
+    },
+    {
+      "task": "impl: move runner/chat helpers into run.py",
+      "status": "completed",
+      "comment": "Created run.py with _build_runner, chat, and _run_sync plus detailed docstrings."
+    },
+    {
+      "task": "impl: keep agent.py definition-only with root_agent + app",
+      "status": "completed",
+      "comment": "agent.py now defines build_agent, root_agent, and app for ADK web."
+    },
+    {
+      "task": "impl: update __init__ for ADK discovery",
+      "status": "completed",
+      "comment": "Added agent import in personal_assistant_adk/__init__.py."
+    },
+    {
+      "task": "chore: run checks",
+      "status": "completed",
+      "comment": "Ran uv run video-agent-checks and uv run pytest -m unit core/tests/test_adk_chat_service.py."
+    }
+  ]
+}
