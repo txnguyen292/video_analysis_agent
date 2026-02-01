@@ -55,6 +55,7 @@ Before implementing:
 - Every task must include `task`, `status`, and `comment`.
 - Ensure tests appear before any implementation tasks.
 - Update task status and comment as work progresses.
+- Break tasks into multiple small, sequential steps; each step should be as granular as practical.
 
 Example `tasks.json`:
 ```json
@@ -83,6 +84,7 @@ Example `tasks.json`:
 - Run tests to confirm failures.
 - **Implement the minimum code** to pass.
 - Refactor with tests green.
+- Repeat in small sequential slices (test → implement → green) until the feature is complete.
 
 ### 8) Finalize
 - Update spec and plan if behavior changes during implementation.
@@ -91,3 +93,4 @@ Example `tasks.json`:
   - Goal of the work
   - Overall status (e.g., on track / blocked / complete)
   - Timestamp (include local date and time)
+  - User observations/notes gathered during the work
