@@ -16,14 +16,15 @@ from google.adk.cli.fast_api import get_fast_api_app
 from google.adk.agents import LlmAgent
 
 from personal_assistant import config
+from personal_assistant_adk.video_agent import build_video_agent
 
 
 def build_agent() -> LlmAgent:
     """Build and return the ADK LLM agent.
 
     Returns:
-        LlmAgent configured with a default model and instruction, used
-        as the root ADK agent.
+        LlmAgent configured with a default model, instruction, and
+        the video sub-agent for video-specific requests.
 
     Example:
         >>> agent = build_agent()
@@ -32,11 +33,17 @@ def build_agent() -> LlmAgent:
     """
 
     model = config.get_env("ADK_MODEL", "gemini-2.5-flash") or "gemini-2.5-flash"
+    video_agent = build_video_agent()
     return LlmAgent(
         name="personal_assistant",
         model=model,
         description="ADK-backed personal assistant.",
-        instruction="You are a helpful assistant.",
+        instruction=(
+            "You are a helpful personal assistant. "
+            "If the user provides a video file path, transfer the request to the "
+            "video_assistant sub-agent to answer questions about the video."
+        ),
+        sub_agents=[video_agent],
     )
 
 
