@@ -37,8 +37,8 @@ class AppLayout(ft.Row):
         self.sidebar = ft.NavigationRail(
             selected_index=self.selected_index,
             label_type=ft.NavigationRailLabelType.ALL,
-            min_width=100,
-            min_extended_width=200,
+            min_width=theme.SIDEBAR_WIDTH,
+            min_extended_width=theme.SIDEBAR_WIDTH_EXTENDED,
             group_alignment=-0.9,
             bgcolor="transparent",
             indicator_color=theme.NAV_INDICATOR,
@@ -65,7 +65,7 @@ class AppLayout(ft.Row):
                     selected_icon=ft.Icon(
                         ft.Icons.CHAT_BUBBLE, color=theme.NAV_ICON_SELECTED
                     ),
-                    label="Chat",
+                    label="Personal Assistant",
                 ),
                 ft.NavigationRailDestination(
                     icon=ft.Icon(ft.Icons.EVENT_NOTE_OUTLINED, color=theme.NAV_ICON),

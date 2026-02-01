@@ -98,6 +98,10 @@ NAV_INDICATOR = "#2A3952"
 NAV_ICON = "#A1AEC4"
 NAV_ICON_SELECTED = "#E7EDF7"
 
+# Navigation sizing.
+SIDEBAR_WIDTH = 120
+SIDEBAR_WIDTH_EXTENDED = 200
+
 
 def apply_accent(name: str) -> str:
     # Updates the active accent variables used throughout the UI.

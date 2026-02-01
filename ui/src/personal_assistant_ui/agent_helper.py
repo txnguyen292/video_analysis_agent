@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import asyncio
 import time
+from collections.abc import AsyncIterator
 from typing import Any
 
 from personal_assistant.agent import VideoAgent
 from personal_assistant.config import load_config
 from personal_assistant.main import get_agent
 from personal_assistant.usage import UsageStats, UsageTracker
+from personal_assistant_adk import run as adk_run
 from personal_assistant_ui.config import load_ui_config
 
 
@@ -62,3 +64,44 @@ class AgentHelper:
             return response.text, stats, elapsed
 
         return await asyncio.to_thread(_run)
+
+
+class AdkChatHelper:
+    """Helper for streaming ADK chat responses in the UI.
+
+    This helper keeps the ADK session ID in memory for the lifetime of
+    the UI instance, enabling multi-turn conversations.
+
+    Example:
+        >>> helper = AdkChatHelper()
+        >>> isinstance(helper.session_id, (str, type(None)))
+        True
+    """
+
+    def __init__(self) -> None:
+        self.session_id: str | None = None
+
+    async def stream_chat(
+        self, message: str, video_path: str | None = None
+    ) -> tuple[str, AsyncIterator[str]]:
+        """Stream chat response chunks from the ADK agent.
+
+        Args:
+            message: User input text.
+            video_path: Optional video file path for video questions.
+
+        Returns:
+            Tuple of (session_id, async iterator of response chunks).
+
+        Example:
+            >>> helper = AdkChatHelper()  # doctest: +SKIP
+            >>> session_id, stream = await helper.stream_chat(\"Hello\")  # doctest: +SKIP
+            >>> async for chunk in stream:  # doctest: +SKIP
+            ...     print(chunk)
+        """
+
+        session_id, stream = await adk_run.stream_chat(
+            message, session_id=self.session_id, video_path=video_path
+        )
+        self.session_id = session_id
+        return session_id, stream
